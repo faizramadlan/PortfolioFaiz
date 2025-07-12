@@ -16,6 +16,34 @@ function randomId() {
   return Math.random().toString(36).slice(2, 10);
 }
 
+// Realistic jobseeker obstacles
+const OBSTACLE_EMOJIS = [
+  "📄", // Rejection letter
+  "⏰", // Time pressure
+  "💸", // Low salary offer
+  "🚫", // Application rejected
+  "😰", // Interview anxiety
+  "📧", // No response email
+  "🎭", // Office politics
+  "📊", // Tough competition
+  "💼", // Overqualified
+  "🔒", // Job requirements mismatch
+  "⏳", // Long hiring process
+  "📱", // Ghosting recruiter
+  "🎯", // Unrealistic expectations
+  "📋", // Endless paperwork
+  "🤖", // AI screening
+  "📞", // No callback
+  "💻", // Technical interview fail
+  "📚", // Skills gap
+  "🏢", // Toxic workplace
+  "💰", // Budget cuts
+];
+
+function getRandomObstacleEmoji() {
+  return OBSTACLE_EMOJIS[Math.floor(Math.random() * OBSTACLE_EMOJIS.length)];
+}
+
 export default function MiniGame({
   onScore, playing, onGameOver, sectionMilestones, onMilestoneReached, highScore
 }: {
@@ -30,7 +58,7 @@ export default function MiniGame({
   const [jumping, setJumping] = useState(false);
   const [crouching, setCrouching] = useState(false);
   const [velocity, setVelocity] = useState(0);
-  const [obstacles, setObstacles] = useState<{x: number, y: number, high: boolean, id: string}[]>([]);
+  const [obstacles, setObstacles] = useState<{x: number, y: number, high: boolean, id: string, emoji: string}[]>([]);
   const [particles, setParticles] = useState<{x: number, y: number, id: string}[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -144,6 +172,7 @@ export default function MiniGame({
                 y: GROUND_Y,
                 high: false,
                 id: randomId(),
+                emoji: getRandomObstacleEmoji(),
               },
             ];
           }
@@ -266,7 +295,7 @@ export default function MiniGame({
         style={{ left: 40, top: charY, transform: `scaleX(-1) ${jumping ? 'rotate(-20deg)' : ''}` }}
       >
         <span style={{ display: "inline-block", transition: "transform 0.1s", transform: crouching ? "scaleY(0.5) scaleX(-1)" : "scaleY(1) scaleX(-1)" }}>
-          🪵
+          👨‍💼
         </span>
       </div>
       {obstacles.map((o) => (
@@ -275,7 +304,7 @@ export default function MiniGame({
           className={`absolute text-4xl select-none transition-transform duration-200`}
           style={{ left: o.x, top: o.y + 10 }}
         >
-          🌵
+          {o.emoji}
         </div>
       ))}
       {particles.map((p) => (

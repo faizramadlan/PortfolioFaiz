@@ -16,12 +16,12 @@ const sections = [
           Professional Summary
         </h3>
         <p className="text-sm leading-relaxed">
-          Dynamic and service-oriented IT professional with 3+ years of combined experience in technical consulting, web development, and client-facing roles. Proven ability to bridge business needs with technical solutions, lead cross-functional teams, and deliver scalable systems. Strong foundation in Agile/Scrum, system analysis, and project management. Passionate about creating impactful applications while continuously learning and adapting.
+          Technical Consultant and Developer with expertise in enterprise software solutions and full-stack development. Proven track record of leading requirement analysis, supervising development teams, and delivering scalable applications. Strong foundation in modern web technologies, mobile development, and cloud infrastructure. Passionate about creating efficient, user-friendly applications that solve real-world problems.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <span className="bg-pixel-green text-pixel-yellow px-3 py-1 rounded text-xs font-bold">Agile/Scrum</span>
-          <span className="bg-pixel-red text-pixel-yellow px-3 py-1 rounded text-xs font-bold">System Analysis</span>
-          <span className="bg-pixel-orange text-pixel-foreground px-3 py-1 rounded text-xs font-bold">Project Management</span>
+          <span className="bg-pixel-green text-pixel-yellow px-3 py-1 rounded text-xs font-bold">Technical Consulting</span>
+          <span className="bg-pixel-red text-pixel-yellow px-3 py-1 rounded text-xs font-bold">Full-Stack Development</span>
+          <span className="bg-pixel-orange text-pixel-foreground px-3 py-1 rounded text-xs font-bold">Team Leadership</span>
         </div>
       </div>
     ),
@@ -39,35 +39,34 @@ const sections = [
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
-            <h4 className="text-pixel-red font-bold text-sm">Frontend Development</h4>
+            <h4 className="text-pixel-red font-bold text-sm">Languages</h4>
             <ul className="text-xs space-y-1">
               <li className="flex items-center gap-2"><span>⭐</span>JavaScript, TypeScript</li>
-              <li className="flex items-center gap-2"><span>⭐</span>React, Vue.js, Next.js</li>
-              <li className="flex items-center gap-2"><span>⭐</span>Tailwind CSS, SCSS</li>
+              <li className="flex items-center gap-2"><span>⭐</span>SQL, Python</li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="text-pixel-red font-bold text-sm">Backend Development</h4>
+            <h4 className="text-pixel-red font-bold text-sm">Frontend Technologies</h4>
             <ul className="text-xs space-y-1">
-              <li className="flex items-center gap-2"><span>🍄</span>Node.js, Express.js</li>
-              <li className="flex items-center gap-2"><span>🍄</span>REST APIs, GraphQL</li>
-              <li className="flex items-center gap-2"><span>🍄</span>Technical Documentation</li>
+              <li className="flex items-center gap-2"><span>🍄</span>React.js, Next.js, Vue.js</li>
+              <li className="flex items-center gap-2"><span>🍄</span>React Native, Expo</li>
+              <li className="flex items-center gap-2"><span>🍄</span>Redux, Pinia, TailwindCSS</li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="text-pixel-red font-bold text-sm">Database & DevOps</h4>
+            <h4 className="text-pixel-red font-bold text-sm">Backend & Database</h4>
             <ul className="text-xs space-y-1">
-              <li className="flex items-center gap-2"><span>🌸</span>PostgreSQL, MySQL, MongoDB</li>
-              <li className="flex items-center gap-2"><span>🌸</span>Prisma, Sequelize</li>
-              <li className="flex items-center gap-2"><span>🌸</span>Docker, Kubernetes, AWS</li>
+              <li className="flex items-center gap-2"><span>🌸</span>Node.js, Express.js</li>
+              <li className="flex items-center gap-2"><span>🌸</span>MySQL, PostgreSQL, MongoDB</li>
+              <li className="flex items-center gap-2"><span>🌸</span>Redis, GraphQL, RESTful APIs</li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="text-pixel-red font-bold text-sm">Languages & Tools</h4>
+            <h4 className="text-pixel-red font-bold text-sm">DevOps & Tools</h4>
             <ul className="text-xs space-y-1">
-              <li className="flex items-center gap-2"><span>⭐</span>Mendix, Midtrans API</li>
-              <li className="flex items-center gap-2"><span>🍄</span>Multer, Technical Writing</li>
-              <li className="flex items-center gap-2"><span>🌸</span>Bahasa Indonesia, English</li>
+              <li className="flex items-center gap-2"><span>⭐</span>Docker, Kubernetes, Nginx</li>
+              <li className="flex items-center gap-2"><span>🍄</span>GitHub, Postman, Figma</li>
+              <li className="flex items-center gap-2"><span>🌸</span>Linux, AWS, Midtrans API</li>
             </ul>
           </div>
         </div>
@@ -87,25 +86,26 @@ const sections = [
         <div className="flex flex-col gap-6">
           <div className="pixel-border bg-gradient-to-r from-pixel-green to-pixel-yellow p-4 transform hover:scale-105 transition-transform duration-200">
             <div className="flex justify-between items-start mb-2">
-              <div className="font-bold text-sm">PT Indonesia Global Solusindo</div>
+              <div className="font-bold text-sm">Indonesia Global Solusindo</div>
               <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Current</span>
             </div>
-            <div className="text-xs text-pixel-foreground mb-3">Technical Consultant | Jul 2023 – Present</div>
+            <div className="text-xs text-pixel-foreground mb-3">Technical Consultant/Developer | Jul 2023 – Present</div>
+            <p className="text-xs text-pixel-foreground mb-3 italic">IT consultancy company providing custom software solutions to clients</p>
             <ul className="list-disc ml-4 text-xs space-y-1">
-              <li>Led requirement analysis and technical planning for 3+ enterprise projects.</li>
-              <li>Designed low-code solutions using Mendix, reducing manual processes by 40%.</li>
-              <li>Supervised teams of 3+ developers, resolved production issues, delivered comprehensive documentation.</li>
-              <li>Implemented Agile methodologies, improving project delivery time by 25%.</li>
+              <li>Led requirement analysis and technical planning for 3+ enterprise-grade projects to accelerate project readiness.</li>
+              <li>Developed solutions to automate manual workflows and streamline operations.</li>
+              <li>Supervised 2–4 developers per project, ensuring on-time delivery through agile coordination and code reviews.</li>
+              <li>Resolved critical production issues through hands-on debugging and root cause analysis.</li>
             </ul>
           </div>
           <div className="pixel-border bg-gradient-to-r from-pixel-yellow to-pixel-green p-4 transform hover:scale-105 transition-transform duration-200">
-            <div className="font-bold text-sm">Freelance Web Developer</div>
-            <div className="text-xs text-pixel-foreground mb-3">Sep 2022 – Dec 2022</div>
+            <div className="font-bold text-sm">Freelance Developer</div>
+            <div className="text-xs text-pixel-foreground mb-3">Sep 2022 – Jan 2023</div>
             <ul className="list-disc ml-4 text-xs space-y-1">
-              <li>Built responsive websites for 8+ clients, achieving 95% client satisfaction.</li>
-              <li>Refactored legacy code, improving performance by 60%.</li>
-              <li>Enhanced UI/UX designs, increasing user engagement by 45%.</li>
-              <li>Resolved urgent outages within 2 hours, maintaining 99.9% uptime.</li>
+              <li>Built responsive websites using HTML, CSS, and JavaScript based on client specifications.</li>
+              <li>Refactored front-end codebases to enhance usability and ensure compatibility across browsers.</li>
+              <li>Turned client requirements into intuitive UI/UX designs and implemented them efficiently.</li>
+              <li>Handled urgent website issues and restored functionality under time pressure.</li>
             </ul>
           </div>
         </div>
@@ -128,46 +128,13 @@ const sections = [
               <span className="font-bold text-sm">Cakrawala University</span>
               <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">Ongoing</span>
             </div>
-            <div className="text-xs text-pixel-foreground">Bachelor&apos;s in Information Systems and Technology</div>
-            <div className="text-xs text-pixel-foreground">Jakarta, Indonesia | Mar 2024 – Present</div>
+            <div className="text-xs text-pixel-foreground">Informatics System and Technology</div>
+            <div className="text-xs text-pixel-foreground">Jakarta, Indonesia | Mar 2025 – Present</div>
           </div>
           <div className="pixel-border bg-gradient-to-r from-pixel-green to-pixel-orange p-4 transform hover:scale-105 transition-transform duration-200">
-            <div className="font-bold text-sm">Hacktiv8 Coding Bootcamp</div>
-            <div className="text-xs text-pixel-foreground">Full Stack JavaScript Immersive Program</div>
+            <div className="font-bold text-sm">Hacktiv8 Indonesia</div>
+            <div className="text-xs text-pixel-foreground">Fullstack Javascript</div>
             <div className="text-xs text-pixel-foreground">Jakarta, Indonesia | Jan 2023 – May 2023</div>
-          </div>
-          <div className="pixel-border bg-gradient-to-r from-pixel-red to-pixel-yellow p-4 transform hover:scale-105 transition-transform duration-200">
-            <div className="flex justify-between items-start mb-2">
-              <span className="font-bold text-sm">Gadjah Mada University</span>
-              <span className="text-xs bg-pixel-orange text-pixel-foreground px-2 py-1 rounded">Unfinished</span>
-            </div>
-            <div className="text-xs text-pixel-foreground">Bachelor of Law</div>
-            <div className="text-xs text-pixel-foreground">Yogyakarta, Indonesia | Jul 2016 – May 2019</div>
-          </div>
-        </div>
-      </section>
-    ),
-  },
-  {
-    id: "certifications",
-    label: "Certifications",
-    icon: "🏆",
-    content: (
-      <section id="certifications" className="pixel-border p-6 bg-gradient-to-br from-pixel-orange to-pixel-red text-pixel-foreground w-full max-w-3xl">
-        <h3 className="text-pixel-yellow text-xl mb-4 flex items-center gap-3">
-          <span className="text-2xl">🏆</span>
-          Certifications
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="pixel-border bg-gradient-to-r from-pixel-green to-pixel-yellow p-4 text-center transform hover:scale-105 transition-transform duration-200">
-            <div className="text-3xl mb-2">🎯</div>
-            <div className="font-bold text-sm">Hacktiv8 Fullstack Javascript Immersive</div>
-            <div className="text-xs text-pixel-foreground mt-1">2023</div>
-          </div>
-          <div className="pixel-border bg-gradient-to-r from-pixel-yellow to-pixel-green p-4 text-center transform hover:scale-105 transition-transform duration-200">
-            <div className="text-3xl mb-2">⚡</div>
-            <div className="font-bold text-sm">Mendix Rapid Developer</div>
-            <div className="text-xs text-pixel-foreground mt-1">2023</div>
           </div>
         </div>
       </section>
@@ -184,93 +151,117 @@ const sections = [
           Projects
           <span className="animate-bounce text-2xl">🪙</span>
         </h3>
-        {/* Professional Projects */}
         <div className="mb-8">
           <div className="text-pixel-green font-bold text-lg mb-2">Professional Projects</div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="pixel-border bg-gradient-to-br from-pixel-yellow to-pixel-green p-4 transform hover:scale-105 transition-transform duration-200">
               <div className="flex justify-between items-start mb-3">
-                <span className="font-bold text-pixel-green text-sm">Space by KAI</span>
-                <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Enterprise</span>
+                <span className="font-bold text-pixel-green text-sm">IAMA Dashboard</span>
+                <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Jan 2025</span>
               </div>
-              <p className="text-pixel-foreground text-xs mb-3">Built a proposal submission portal for 50+ partner organizations with automated workflow management.</p>
+              <p className="text-pixel-foreground text-xs mb-3">Built real-time monitoring dashboard for 50+ automation bots with NextJs and Prisma.</p>
               <div className="flex flex-wrap gap-1 mb-3">
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Mendix</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Java</span>
-                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">JavaScript</span>
-                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">SCSS</span>
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">PostgreSQL</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Kubernetes</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">Next.js</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Prisma</span>
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">TypeScript</span>
               </div>
               <a href="#" className="text-pixel-orange underline text-xs hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">View Project →</a>
             </div>
             <div className="pixel-border bg-gradient-to-br from-pixel-orange to-pixel-red p-4 transform hover:scale-105 transition-transform duration-200">
               <div className="flex justify-between items-start mb-3">
-                <span className="font-bold text-pixel-yellow text-sm">Railway Asset Management (RAM)</span>
-                <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">Platform</span>
+                <span className="font-bold text-pixel-yellow text-sm">Railtax</span>
+                <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">Jul 2024</span>
               </div>
-              <p className="text-pixel-foreground text-xs mb-3">Centralized platform to manage 2000+ railway asset records with real-time monitoring capabilities.</p>
+              <p className="text-pixel-foreground text-xs mb-3">Created a tax document management system serving 500+ users monthly.</p>
               <div className="flex flex-wrap gap-1 mb-3">
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Mendix</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Java</span>
-                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">JavaScript</span>
-                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">SCSS</span>
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">PostgreSQL</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Kubernetes</span>
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">React</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Node.js</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">PostgreSQL</span>
               </div>
               <a href="#" className="text-pixel-yellow underline text-xs hover:text-pixel-orange transition-colors" target="_blank" rel="noopener noreferrer">View Project →</a>
             </div>
             <div className="pixel-border bg-gradient-to-br from-pixel-red to-pixel-orange p-4 transform hover:scale-105 transition-transform duration-200">
               <div className="flex justify-between items-start mb-3">
-                <span className="font-bold text-pixel-yellow text-sm">Railtax</span>
-                <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">SaaS</span>
+                <span className="font-bold text-pixel-yellow text-sm">Railway Asset Management (RAM)</span>
+                <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">Jan 2024</span>
               </div>
-              <p className="text-pixel-foreground text-xs mb-3">Tax document management system serving 500+ users monthly with automated compliance checks.</p>
+              <p className="text-pixel-foreground text-xs mb-3">Developed a centralized platform managing 2000+ asset records, improving data accuracy and retrieval speed.</p>
               <div className="flex flex-wrap gap-1 mb-3">
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Mendix</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Java</span>
-                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">JavaScript</span>
-                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">SCSS</span>
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">PostgreSQL</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Kubernetes</span>
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">React</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Node.js</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">PostgreSQL</span>
               </div>
               <a href="#" className="text-pixel-yellow underline text-xs hover:text-pixel-orange transition-colors" target="_blank" rel="noopener noreferrer">View Project →</a>
             </div>
             <div className="pixel-border bg-gradient-to-br from-pixel-green to-pixel-yellow p-4 transform hover:scale-105 transition-transform duration-200">
               <div className="flex justify-between items-start mb-3">
-                <span className="font-bold text-pixel-orange text-sm">IAMA Dashboard</span>
-                <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Dashboard</span>
+                <span className="font-bold text-pixel-orange text-sm">Space by KAI</span>
+                <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Oct 2023</span>
               </div>
-              <p className="text-pixel-foreground text-xs mb-3">Dashboard for real-time monitoring and control of 50+ automation bots with analytics and reporting.</p>
+              <p className="text-pixel-foreground text-xs mb-3">Built a proposal submission portal and asset showcase website for 50+ partner organizations.</p>
               <div className="flex flex-wrap gap-1 mb-3">
-                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">Next.js</span>
-                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">React</span>
-                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Prisma</span>
-                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Zustand</span>
-                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">Tailwind CSS</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">React</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Node.js</span>
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">PostgreSQL</span>
               </div>
+              <a href="#" className="text-pixel-orange underline text-xs hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">View Project →</a>
             </div>
           </div>
         </div>
-        {/* Personal Projects */}
         <div>
           <div className="text-pixel-blue font-bold text-lg mb-2">Personal Projects</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="pixel-border bg-gradient-to-r from-pixel-yellow to-pixel-green p-4">
-              <div className="font-bold text-sm">Project Alpha</div>
-              <div className="text-xs text-pixel-foreground mb-2">A cool side project using React and Node.js.</div>
-              <ul className="list-disc ml-4 text-xs space-y-1">
-                <li>Built a task tracker with real-time sync.</li>
-                <li>Integrated with third-party APIs for notifications.</li>
-              </ul>
+              <div className="flex justify-between items-start mb-2">
+                <div className="font-bold text-sm">Share-a-Ride</div>
+                <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Apr 2023</span>
+              </div>
+              <div className="text-xs text-pixel-foreground mb-2">Final bootcamp project: built mobile app and CMS for long-distance ride-sharing.</div>
+              <div className="flex flex-wrap gap-1 mb-2">
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">React Native</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Expo</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">Apollo</span>
+                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Midtrans</span>
+              </div>
             </div>
             <div className="pixel-border bg-gradient-to-r from-pixel-green to-pixel-yellow p-4">
-              <div className="font-bold text-sm">Project Beta</div>
-              <div className="text-xs text-pixel-foreground mb-2">A mobile app for habit tracking.</div>
-              <ul className="list-disc ml-4 text-xs space-y-1">
-                <li>Cross-platform with React Native.</li>
-                <li>Offline support and local notifications.</li>
-              </ul>
+              <div className="flex justify-between items-start mb-2">
+                <div className="font-bold text-sm">Watership Mobile</div>
+                <span className="text-xs bg-pixel-red text-pixel-yellow px-2 py-1 rounded">Apr 2023</span>
+              </div>
+              <div className="text-xs text-pixel-foreground mb-2">Developed brand showcase mobile app inspired by Fireship.io.</div>
+              <div className="flex flex-wrap gap-1 mb-2">
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">React Native</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">GraphQL</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">MongoDB</span>
+                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">AWS</span>
+              </div>
+            </div>
+            <div className="pixel-border bg-gradient-to-r from-pixel-red to-pixel-orange p-4">
+              <div className="flex justify-between items-start mb-2">
+                <div className="font-bold text-sm">Watership Web</div>
+                <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">Apr 2023</span>
+              </div>
+              <div className="text-xs text-pixel-foreground mb-2">Created responsive web showcase app.</div>
+              <div className="flex flex-wrap gap-1 mb-2">
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">ReactJS</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Redux</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">Express</span>
+                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">TailwindCSS</span>
+              </div>
+            </div>
+            <div className="pixel-border bg-gradient-to-r from-pixel-orange to-pixel-red p-4">
+              <div className="flex justify-between items-start mb-2">
+                <div className="font-bold text-sm">Oslo Dota 2 Companion</div>
+                <span className="text-xs bg-pixel-green text-pixel-yellow px-2 py-1 rounded">Mar 2023</span>
+              </div>
+              <div className="text-xs text-pixel-foreground mb-2">Developed a learning companion app for new Dota 2 players.</div>
+              <div className="flex flex-wrap gap-1 mb-2">
+                <span className="bg-pixel-green text-pixel-yellow px-2 py-0.5 rounded text-[10px]">Vite</span>
+                <span className="bg-pixel-orange text-pixel-foreground px-2 py-0.5 rounded text-[10px]">Vue</span>
+                <span className="bg-pixel-yellow text-pixel-green px-2 py-0.5 rounded text-[10px]">Pinia</span>
+                <span className="bg-pixel-red text-pixel-yellow px-2 py-0.5 rounded text-[10px]">RESTful API</span>
+              </div>
             </div>
           </div>
         </div>
@@ -297,26 +288,26 @@ const sections = [
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-pixel-yellow to-pixel-green transform hover:scale-105 transition-transform duration-200">
+              <span className="text-2xl">📱</span>
+              <div>
+                <div className="text-xs font-bold">Phone</div>
+                <a href="tel:+62895380764728" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors">+62895380764728</a>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-pixel-red to-pixel-orange transform hover:scale-105 transition-transform duration-200">
               <span className="text-2xl">💼</span>
               <div>
                 <div className="text-xs font-bold">LinkedIn</div>
                 <a href="https://linkedin.com" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">linkedin.com</a>
               </div>
             </div>
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-pixel-red to-pixel-orange transform hover:scale-105 transition-transform duration-200">
-              <span className="text-2xl">🌍</span>
-              <div>
-                <div className="text-xs font-bold">Location</div>
-                <div className="text-xs">Jakarta, Indonesia</div>
-              </div>
-            </div>
             <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-pixel-orange to-pixel-red transform hover:scale-105 transition-transform duration-200">
-              <span className="text-2xl">🎯</span>
+              <span className="text-2xl">🐙</span>
               <div>
-                <div className="text-xs font-bold">Availability</div>
-                <div className="text-xs">Open to opportunities</div>
+                <div className="text-xs font-bold">GitHub</div>
+                <a href="https://github.com" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">github.com</a>
               </div>
             </div>
           </div>
@@ -326,8 +317,19 @@ const sections = [
   },
 ];
 
+// Prologue lines for the funny intro
+const prologueLines = [
+  "Help this jobseeker to...",
+  "🏃‍♂️ Run through the corporate jungle!",
+  "📄 Dodge rejection letters & obstacles!",
+  "💼 Jump over office politics!",
+  "⏰ Beat the clock & competition!",
+  "🚀 Land that dream job!",
+  "Ready? Let's go! 🎯"
+];
+
 // Score thresholds for section unlocks
-const SECTION_SCORES = [0, 300, 600, 1200, 2000, 3000, 4000];
+const SECTION_SCORES = [0, 800, 1800, 3200, 5000, 7000, 9500];
 
 export default function Home() {
   // Game state
@@ -344,6 +346,9 @@ export default function Home() {
   const [newHighScore, setNewHighScore] = useState(false);
   const [showCloseButton, setShowCloseButton] = useState(false);
   const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
+  const [showPrologue, setShowPrologue] = useState(false);
+  const [prologueStep, setPrologueStep] = useState(0);
+  const [isFirstGame, setIsFirstGame] = useState(true);
 
   // Reset state on page load
   useEffect(() => {
@@ -358,6 +363,7 @@ export default function Home() {
     setPaused(false);
     setModalSection(null);
     setHasPlayedOnce(false);
+    setIsFirstGame(true); // Reset for new game
   }, []);
 
   // Auto-popup sections based on score milestones
@@ -379,6 +385,22 @@ export default function Home() {
       }
     }
   }, [score, hasPlayedOnce, playing]);
+
+  // Prologue sequence logic
+  useEffect(() => {
+    if (showPrologue && prologueStep < prologueLines.length) {
+      const timer = setTimeout(() => {
+        setPrologueStep(prev => prev + 1);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else if (showPrologue && prologueStep >= prologueLines.length) {
+      setTimeout(() => {
+        setShowPrologue(false);
+        setPlaying(true);
+        setIsFirstGame(false);
+      }, 1000);
+    }
+  }, [showPrologue, prologueStep, prologueLines.length]);
 
   // High score celebration
   useEffect(() => {
@@ -448,8 +470,12 @@ export default function Home() {
   };
 
   const handleStartGame = () => {
-    setPlaying(true);
-    setHasPlayedOnce(true);
+    if (isFirstGame) {
+      setShowPrologue(true);
+      setPrologueStep(0);
+    } else {
+      setPlaying(true);
+    }
   };
 
   return (
@@ -473,6 +499,19 @@ export default function Home() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
             <div className="text-8xl text-pixel-yellow font-bold animate-pulse">
               {countdown}
+            </div>
+          </div>
+        )}
+
+        {showPrologue && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+            <div className="text-center text-pixel-yellow">
+              <div className="text-2xl font-bold mb-4 animate-pulse">
+                {prologueLines[prologueStep]}
+              </div>
+              <div className="text-sm text-pixel-green">
+                {prologueStep < prologueLines.length - 1 ? "..." : "Starting in 1 second..."}
+              </div>
             </div>
           </div>
         )}
