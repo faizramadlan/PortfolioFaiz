@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import MiniGame from "./MiniGame";
-import Image from "next/image";
 
 // Portfolio sections data
 const sections = [
@@ -338,16 +337,8 @@ export default function Home() {
   const [gameOver, setGameOver] = useState(false);
   const [paused, setPaused] = useState(false);
   const [modalSection, setModalSection] = useState<number|null>(null);
-  const [unlocked, setUnlocked] = useState(Array(sections.length).fill(true));
-  const [toast, setToast] = useState<string|null>(null);
-  const toastTimeout = useRef<NodeJS.Timeout|null>(null);
-  const [unlockNotif, setUnlockNotif] = useState<string|null>(null);
   const [showFireworks, setShowFireworks] = useState(false);
-  const [showHighScore, setShowHighScore] = useState(false);
-  const prevUnlocked = useRef(unlocked);
   const prevHighScore = useRef(highScore);
-  const [notifQueue, setNotifQueue] = useState<string[]>([]);
-  const [activeNotif, setActiveNotif] = useState<string|null>(null);
   const [showInstructions, setShowInstructions] = useState(false);
   const [countdown, setCountdown] = useState<number|null>(null);
   const [newHighScore, setNewHighScore] = useState(false);
@@ -366,7 +357,6 @@ export default function Home() {
     setGameOver(false);
     setPaused(false);
     setModalSection(null);
-    setUnlocked(Array(sections.length).fill(true));
     setHasPlayedOnce(false);
   }, []);
 
@@ -465,12 +455,7 @@ export default function Home() {
   return (
     <>
       <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden">
-        {/* Toast Notification */}
-        {toast && (
-          <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-pixel-yellow text-pixel-green pixel-border text-base font-bold shadow-lg animate-bounce">
-            {toast}
-          </div>
-        )}
+
 
         {/* Fireworks Animation */}
         {showFireworks && (
@@ -549,6 +534,19 @@ export default function Home() {
             onScore={handleScore}
             playing={playing && !paused}
             onGameOver={handleGameOver}
+            sectionMilestones={sections.slice(1).map((s, i) => ({ score: SECTION_SCORES[i+1], label: `${SECTION_SCORES[i+1]} pts: ${s.label}` }))}
+            onMilestoneReached={(index) => {
+              const sectionIndex = index + 1;
+              if (sectionIndex < sections.length) {
+                setModalSection(sectionIndex);
+                setPaused(true);
+                setShowFireworks(true);
+                setShowCloseButton(false);
+                setTimeout(() => setShowFireworks(false), 2000);
+                setTimeout(() => setShowCloseButton(true), 3000);
+              }
+            }}
+            highScore={highScore}
           />
         )}
 
