@@ -547,7 +547,7 @@ export default function Home() {
               <div className="font-bold mb-2">How to Play:</div>
               <div>Press <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">Space</kbd> or <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">↑</kbd> to jump</div>
               <div>Press <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">↓</kbd> or <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">S</kbd> to crouch</div>
-              <div>Avoid the cacti to earn points and unlock sections!</div>
+              <div>Avoid job hunt obstacles to earn points and unlock sections!</div>
             </div>
           )}
         </div>
@@ -604,6 +604,9 @@ export default function Home() {
             
             <div className="text-sm text-pixel-foreground mb-4">
               Final Score: <span className="text-pixel-yellow font-bold">{score.toString().padStart(6, "0")}</span>
+            </div>
+            <div className="text-xs text-pixel-green mb-4">
+              Tired of playing? You can also click the section buttons below to view the portfolio.
             </div>
             
             <button
