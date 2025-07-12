@@ -329,7 +329,7 @@ const prologueLines = [
 ];
 
 // Score thresholds for section unlocks
-const SECTION_SCORES = [0, 800, 1800, 3200, 5000, 7000, 9500];
+const SECTION_SCORES = [0, 1200, 3000, 6000, 10000, 15000, 21000];
 
 export default function Home() {
   // Game state
@@ -591,7 +591,9 @@ export default function Home() {
 
         {gameOver && (
           <div className="flex flex-col items-center justify-center w-full">
-            <div className="text-2xl text-pixel-red font-bold mb-4 animate-bounce">Game Over</div>
+            <div className="text-2xl text-pixel-red font-bold mb-4 animate-bounce">
+              The HR caught you!
+            </div>
             
             {/* High Score Celebration */}
             {newHighScore && (
