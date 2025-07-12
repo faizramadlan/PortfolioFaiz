@@ -284,14 +284,14 @@ const sections = [
               <span className="text-2xl">📧</span>
               <div>
                 <div className="text-xs font-bold">Email</div>
-                <a href="mailto:ramadlan.faiz@gmail.com" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">ramadlan.faiz@gmail.com</a>
+                <a href="mailto:ramadlan.faiz@gmail.com" className="text-xs underline text-pixel-green font-bold hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">ramadlan.faiz@gmail.com</a>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-pixel-yellow to-pixel-green transform hover:scale-105 transition-transform duration-200">
               <span className="text-2xl">📱</span>
               <div>
                 <div className="text-xs font-bold">Phone</div>
-                <a href="tel:+62895380764728" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors">+62895380764728</a>
+                <a href="tel:+62895380764728" className="text-xs underline text-pixel-green font-bold hover:text-pixel-red transition-colors">+62895380764728</a>
               </div>
             </div>
           </div>
@@ -300,14 +300,14 @@ const sections = [
               <span className="text-2xl">💼</span>
               <div>
                 <div className="text-xs font-bold">LinkedIn</div>
-                <a href="https://linkedin.com" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">linkedin.com</a>
+                <a href="https://www.linkedin.com/in/faiz-ramadlan/" className="text-xs underline text-pixel-green font-bold hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">faiz-ramadlan</a>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-pixel-orange to-pixel-red transform hover:scale-105 transition-transform duration-200">
               <span className="text-2xl">🐙</span>
               <div>
                 <div className="text-xs font-bold">GitHub</div>
-                <a href="https://github.com" className="text-xs underline text-pixel-yellow hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">github.com</a>
+                <a href="https://github.com/faizramadlan" className="text-xs underline text-pixel-green font-bold hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">faizramadlan</a>
               </div>
             </div>
           </div>
@@ -665,7 +665,8 @@ export default function Home() {
           </div>
           <div className="flex gap-4">
             <a href="mailto:ramadlan.faiz@gmail.com" className="underline text-pixel-orange hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">Email</a>
-            <a href="https://linkedin.com" className="underline text-pixel-orange hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/faiz-ramadlan/" className="underline text-pixel-orange hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://github.com/faizramadlan" className="underline text-pixel-orange hover:text-pixel-red transition-colors" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </div>
       </footer>
