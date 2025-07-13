@@ -72,6 +72,7 @@ export default function MiniGame({
   const lastObstacleX = useRef(GAME_WIDTH);
   const triggeredMilestones = useRef<Set<number>>(new Set());
   const [pendingMilestones, setPendingMilestones] = useState<number[]>([]);
+  const [triggeredMarker, setTriggeredMarker] = useState<number|null>(null);
 
   useEffect(() => {
     const hs = sessionStorage.getItem("minigame-highscore");
@@ -154,7 +155,7 @@ export default function MiniGame({
       if (lastObstacleX.current === 0 || nextObstacleGap.current === 0) {
         let gap = 180 + Math.floor(Math.random() * 140);
         const upcomingMilestones = sectionMilestones
-          .map(m => GAME_WIDTH + m.score * 0.4 - distance)
+          .map(m => GAME_WIDTH + m.score * 0.8 - distance)
           .filter(x => x > GAME_WIDTH && x < GAME_WIDTH + 600);
         for (const mx of upcomingMilestones) {
           if (Math.abs(mx - (GAME_WIDTH + gap)) < 60) {
@@ -209,7 +210,7 @@ export default function MiniGame({
     }
     anim = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(anim);
-  }, [jumping, charY, velocity, playing, gameOver, crouching, sectionMilestones, distance]);
+  }, [jumping, charY, velocity, playing, gameOver, crouching, sectionMilestones, distance, score]);
 
   useEffect(() => {
     if (gameOver) {
@@ -234,34 +235,9 @@ export default function MiniGame({
       hasInitialized.current = true;
       lastReportedScore.current = 0;
       setDistance(0);
+      setTriggeredMarker(null);
     }
   }, [playing, gameOver]);
-
-  const milestoneMarkers = sectionMilestones
-    .filter(m => m.score > 0)
-    .map((m, i) => {
-      const milestoneDistance = m.score * 0.4;
-      const markerX = GAME_WIDTH + milestoneDistance - distance;
-      if (
-        markerX <= 40 + CHAR_WIDTH &&
-        markerX + 2 >= 40 &&
-        !triggeredMilestones.current.has(i)
-      ) {
-        triggeredMilestones.current.add(i);
-        setPendingMilestones((prev) => prev.includes(i) ? prev : [...prev, i]);
-      }
-      if (markerX < 0 || markerX > GAME_WIDTH) return null;
-      const opened = highScore >= m.score;
-      return (
-        <div key={i} className="absolute flex flex-col items-center" style={{ left: markerX, top: 0, height: GAME_HEIGHT }}>
-          <div className="text-pixel-blue text-xs font-bold mb-1" style={{ whiteSpace: 'nowrap' }}>
-            {m.label} {opened && <span className="text-green-600">(opened)</span>}
-          </div>
-          <div className="w-0.5 h-full bg-pixel-blue opacity-60" style={{ minWidth: 2 }}></div>
-          <div className="text-pixel-blue text-lg mt-1">{opened ? '✅' : '🏁'}</div>
-        </div>
-      );
-    });
 
   useEffect(() => {
     if (pendingMilestones.length > 0) {
@@ -281,7 +257,6 @@ export default function MiniGame({
       className="relative w-full flex justify-center items-center"
       style={{ height: GAME_HEIGHT, maxWidth: GAME_WIDTH, margin: "0 auto" }}
     >
-      {milestoneMarkers}
       <div
         className="absolute left-0 right-0"
         style={{ top: GROUND_Y + CHAR_HEIGHT, height: 10, background: "#43B047" }}

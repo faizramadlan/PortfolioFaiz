@@ -329,7 +329,7 @@ const prologueLines = [
 ];
 
 // Score thresholds for section unlocks
-const SECTION_SCORES = [0, 800, 1800, 3200, 5000, 7000, 9500];
+const SECTION_SCORES = [800, 1800, 3200, 5000, 7000, 9500];
 
 export default function Home() {
   // Game state
@@ -349,6 +349,7 @@ export default function Home() {
   const [showPrologue, setShowPrologue] = useState(false);
   const [prologueStep, setPrologueStep] = useState(0);
   const [isFirstGame, setIsFirstGame] = useState(true);
+  const [shownSections, setShownSections] = useState<number[]>([]);
 
   // Reset state on page load
   useEffect(() => {
@@ -364,27 +365,47 @@ export default function Home() {
     setModalSection(null);
     setHasPlayedOnce(false);
     setIsFirstGame(true); // Reset for new game
+    setShownSections([]); // Reset shown sections on page load
   }, []);
 
-  // Auto-popup sections based on score milestones
+  // Auto-popup logic for all sections
   useEffect(() => {
-    if (!hasPlayedOnce || !playing) return;
-    
-    const currentUnlockedCount = SECTION_SCORES.filter(threshold => score >= threshold).length;
-    const previousUnlockedCount = SECTION_SCORES.filter(threshold => score - 10 >= threshold).length;
-    
-    if (currentUnlockedCount > previousUnlockedCount && currentUnlockedCount > 1) {
-      const sectionIndex = currentUnlockedCount - 1;
-      if (sectionIndex < sections.length) {
-        setModalSection(sectionIndex);
+    if (!playing) return;
+    for (let idx = 0; idx < SECTION_SCORES.length; idx++) {
+      if (
+        score >= SECTION_SCORES[idx] &&
+        !shownSections.includes(idx) &&
+        modalSection === null
+      ) {
+        setModalSection(idx);
         setPaused(true);
         setShowFireworks(true);
         setShowCloseButton(false);
         setTimeout(() => setShowFireworks(false), 2000);
         setTimeout(() => setShowCloseButton(true), 3000);
+        setShownSections(prev => [...prev, idx]);
+        break;
       }
     }
-  }, [score, hasPlayedOnce, playing]);
+  }, [score, playing, modalSection, shownSections]);
+
+  // Auto-open the first section (Professional Summary) when the game starts, if SECTION_SCORES[0] === 0 and score === 0 and highScore < SECTION_SCORES[1]. Only do this if the section is not already opened (highScore < SECTION_SCORES[1]).
+  useEffect(() => {
+    if (
+      playing &&
+      score === 0 &&
+      SECTION_SCORES[0] === 0 &&
+      highScore < SECTION_SCORES[1] &&
+      modalSection === null
+    ) {
+      setModalSection(0);
+      setPaused(true);
+      setShowFireworks(true);
+      setShowCloseButton(false);
+      setTimeout(() => setShowFireworks(false), 2000);
+      setTimeout(() => setShowCloseButton(true), 3000);
+    }
+  }, [playing, score, highScore, modalSection]);
 
   // Prologue sequence logic
   useEffect(() => {
@@ -436,6 +457,7 @@ export default function Home() {
     setModalSection(null);
     setNewHighScore(false);
     setHasPlayedOnce(true);
+    // Do NOT reset shownSections here
   };
 
   const handleSectionClick = (idx: number) => {
@@ -478,6 +500,15 @@ export default function Home() {
     }
   };
 
+  // Points-to-next-section countdown display
+  const nextSectionIdx = SECTION_SCORES.findIndex((threshold) => score < threshold && highScore < threshold);
+  let pointsToNext = null;
+  let nextSectionLabel = null;
+  if (nextSectionIdx !== -1) {
+    pointsToNext = SECTION_SCORES[nextSectionIdx] - score;
+    nextSectionLabel = sections[nextSectionIdx].label;
+  }
+
   return (
     <>
       <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden">
@@ -519,9 +550,10 @@ export default function Home() {
         {/* Game HUD */}
         <div className="w-full flex flex-col items-center gap-2 mb-4 pt-4">
           <div className="flex flex-col sm:flex-row gap-4 text-pixel-green text-base font-bold items-center">
+            {/* Score and High Score display */}
             <div className="flex gap-6">
-              <span>Score: <span className="text-pixel-yellow">{score.toString().padStart(6, "0")}</span></span>
-              <span>High Score: <span className="text-pixel-orange">{highScore.toString().padStart(6, "0")}</span></span>
+              <span>Score: <span className="text-pixel-yellow bg-black px-1 rounded font-bold">{score.toString().padStart(6, "0")}</span></span>
+              <span>High Score: <span className="text-pixel-orange bg-black px-1 rounded font-bold">{highScore.toString().padStart(6, "0")}</span></span>
             </div>
             <div className="flex gap-2">
               <button 
@@ -547,9 +579,20 @@ export default function Home() {
               <div className="font-bold mb-2">How to Play:</div>
               <div>Press <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">Space</kbd> or <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">↑</kbd> to jump</div>
               <div>Press <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">↓</kbd> or <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">S</kbd> to crouch</div>
-              <div>Avoid the cacti to earn points and unlock sections!</div>
+              <div>Dodge job obstacles to earn points and unlock sections!</div>
             </div>
           )}
+          
+          {playing && pointsToNext !== null ? (
+            <div className="text-lg font-bold text-pixel-yellow bg-black bg-opacity-80 px-4 py-2 rounded mb-2">
+              {pointsToNext} more to unlock <span className="text-pixel-orange">{nextSectionLabel}</span>
+            </div>
+          ) : playing && (
+            <div className="text-lg font-bold text-pixel-green bg-black bg-opacity-80 px-4 py-2 rounded mb-2">
+              🎉 All sections unlocked! 🎉
+            </div>
+          )}
+
         </div>
 
         {/* Play button or Mini-game */}
@@ -563,7 +606,7 @@ export default function Home() {
             </button>
             <div className="text-xs text-pixel-foreground text-center">
               Press Space or ↑ to jump<br/>
-              Avoid the cacti to earn points!
+              Dodge job obstacles to earn points!
             </div>
           </div>
         )}
@@ -573,9 +616,9 @@ export default function Home() {
             onScore={handleScore}
             playing={playing && !paused}
             onGameOver={handleGameOver}
-            sectionMilestones={sections.slice(1).map((s, i) => ({ score: SECTION_SCORES[i+1], label: `${SECTION_SCORES[i+1]} pts: ${s.label}` }))}
+            sectionMilestones={sections.map((s, i) => ({ score: SECTION_SCORES[i], label: `${SECTION_SCORES[i]} pts: ${s.label}` }))}
             onMilestoneReached={(index) => {
-              const sectionIndex = index + 1;
+              const sectionIndex = index;
               if (sectionIndex < sections.length) {
                 setModalSection(sectionIndex);
                 setPaused(true);
@@ -591,7 +634,7 @@ export default function Home() {
 
         {gameOver && (
           <div className="flex flex-col items-center justify-center w-full">
-            <div className="text-2xl text-pixel-red font-bold mb-4 animate-bounce">Game Over</div>
+            <div className="text-2xl text-pixel-red font-bold mb-4 animate-bounce">You have been caught by HR!</div>
             
             {/* High Score Celebration */}
             {newHighScore && (
@@ -619,7 +662,7 @@ export default function Home() {
             return (
               <button
                 key={section.id}
-                className="pixel-border px-4 py-2 text-xs font-bold min-w-[120px] transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-pixel-green to-pixel-yellow text-pixel-yellow hover:from-pixel-orange hover:to-pixel-yellow"
+                className={`pixel-border px-4 py-2 text-xs font-bold min-w-[120px] transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-pixel-green to-pixel-yellow text-pixel-yellow hover:from-pixel-orange hover:to-pixel-yellow`}
                 onClick={() => handleSectionClick(idx)}
                 title={`View ${section.label}`}
               >
@@ -654,6 +697,13 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* Add a hint below the section navigation */}
+        <div className="w-full flex justify-center mt-2 mb-4">
+          <span className="text-xs text-pixel-green bg-black bg-opacity-80 px-3 py-1 rounded">
+            Tip: You can also click the section buttons below directly if you get tired of playing.
+          </span>
+        </div>
       </main>
 
       {/* Footer */}
