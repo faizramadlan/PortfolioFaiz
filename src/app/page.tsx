@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import MiniGame from "./MiniGame";
 
-// Portfolio sections data
+// Section data
 const sections = [
   {
     id: "summary",
@@ -317,10 +317,10 @@ const sections = [
   },
 ];
 
-// Score thresholds for section unlocks
-const SECTION_SCORES = [800, 1800, 3200, 5000, 7000, 9500];
+// Section unlock scores
+const SECTION_SCORES = [1200, 2800, 4200, 6800, 9300, 12000];
 
-// Prologue lines for the funny intro
+// Prologue lines
 const prologueLines = [
   "Help this jobseeker to...",
   "🏃‍♂️ Run through the corporate jungle!",
@@ -332,7 +332,7 @@ const prologueLines = [
 ];
 
 export default function Home() {
-  // Game state
+  // State hooks
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -350,23 +350,22 @@ export default function Home() {
   const [showPrologue, setShowPrologue] = useState(false);
   const [prologueStep, setPrologueStep] = useState(0);
 
-  // Reset state on page load
+  // Reset on mount
   useEffect(() => {
     sessionStorage.removeItem("minigame-score");
     sessionStorage.removeItem("minigame-highscore");
     sessionStorage.removeItem("minigame-unlocked");
-    
     setScore(0);
     setHighScore(0);
     setPlaying(false);
     setGameOver(false);
     setPaused(false);
     setModalSection(null);
-    setIsFirstGame(true); // Reset for new game
-    setShownSections([]); // Reset shown sections on page load
+    setIsFirstGame(true);
+    setShownSections([]);
   }, []);
 
-  // Auto-popup logic for all sections
+  // Section auto-popup
   useEffect(() => {
     if (!playing) return;
     for (let idx = 0; idx < SECTION_SCORES.length; idx++) {
@@ -387,46 +386,7 @@ export default function Home() {
     }
   }, [score, playing, modalSection, shownSections]);
 
-  // Auto-open the first section (Professional Summary) when the game starts, if SECTION_SCORES[0] === 0 and score === 0 and highScore < SECTION_SCORES[1]. Only do this if the section is not already opened (highScore < SECTION_SCORES[1]).
-  useEffect(() => {
-    if (
-      playing &&
-      score === 0 &&
-      SECTION_SCORES[0] === 0 &&
-      highScore < SECTION_SCORES[1] &&
-      modalSection === null
-    ) {
-      setModalSection(0);
-      setPaused(true);
-      setShowFireworks(true);
-      setShowCloseButton(false);
-      setTimeout(() => setShowFireworks(false), 2000);
-      setTimeout(() => setShowCloseButton(true), 3000);
-    }
-  }, [playing, score, highScore, modalSection]);
-
-  // High score celebration
-  useEffect(() => {
-    if (score > prevHighScore.current && score === highScore && score !== 0) {
-      setNewHighScore(true);
-    }
-    prevHighScore.current = highScore;
-  }, [highScore, score]);
-
-  // Countdown timer
-  useEffect(() => {
-    if (countdown !== null && countdown > 0) {
-      const timer = setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else if (countdown === 0) {
-      setCountdown(null);
-      setPaused(false);
-    }
-  }, [countdown]);
-
-  // Prologue logic
+  // Prologue sequence
   useEffect(() => {
     if (showPrologue && prologueStep < prologueLines.length) {
       const timer = setTimeout(() => {
@@ -442,21 +402,44 @@ export default function Home() {
     }
   }, [showPrologue, prologueStep]);
 
-  // Game event handlers
+  // High score effect
+  useEffect(() => {
+    if (score > prevHighScore.current && score === highScore && score !== 0) {
+      setNewHighScore(true);
+    }
+    prevHighScore.current = highScore;
+  }, [highScore, score]);
+
+  // Countdown effect
+  useEffect(() => {
+    if (countdown !== null && countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0) {
+      setCountdown(null);
+      setPaused(false);
+    }
+  }, [countdown]);
+
+  // Game over handler
   const handleGameOver = () => {
     setGameOver(true);
     setPlaying(false);
   };
 
+  // Restart handler
   const handleRestart = () => {
     setGameOver(false);
     setPlaying(true);
     setPaused(false);
     setModalSection(null);
     setNewHighScore(false);
-    // Do NOT reset shownSections here
+    setIsFirstGame(false);
   };
 
+  // Section modal handler
   const handleSectionClick = (idx: number) => {
     setPaused(true);
     setModalSection(idx);
@@ -464,21 +447,22 @@ export default function Home() {
     setTimeout(() => setShowCloseButton(true), 3000);
   };
 
+  // Modal close handler
   const handleCloseModal = () => {
     setModalSection(null);
     setShowCloseButton(false);
-    
     if (playing && !gameOver) {
       setCountdown(3);
     }
   };
 
-  // Score handler for MiniGame
+  // Score update handler
   const handleScore = useCallback((newScore: number) => {
     setScore(newScore);
     setHighScore((prev) => (newScore > prev ? newScore : prev));
   }, []);
 
+  // Progress reset
   const handleReset = () => {
     if (confirm("Are you sure you want to reset all progress? This cannot be undone.")) {
       sessionStorage.removeItem("minigame-score");
@@ -488,6 +472,7 @@ export default function Home() {
     }
   };
 
+  // Start game handler
   const handleStartGame = () => {
     if (isFirstGame) {
       setShowPrologue(true);
@@ -497,7 +482,7 @@ export default function Home() {
     }
   };
 
-  // Points-to-next-section countdown display
+  // Next section HUD
   const nextSectionIdx = SECTION_SCORES.findIndex((threshold) => score < threshold && highScore < threshold);
   let pointsToNext = null;
   let nextSectionLabel = null;
@@ -508,9 +493,8 @@ export default function Home() {
 
   return (
     <>
+      {/* Main layout */}
       <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden">
-
-
         {/* Fireworks Animation */}
         {showFireworks && (
           <div className="fixed inset-0 pointer-events-none z-40 flex items-center justify-center">
@@ -521,7 +505,6 @@ export default function Home() {
             </div>
           </div>
         )}
-
         {/* Countdown Overlay */}
         {countdown !== null && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
@@ -530,7 +513,6 @@ export default function Home() {
             </div>
           </div>
         )}
-
         {/* Prologue Overlay */}
         {showPrologue && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
@@ -544,11 +526,9 @@ export default function Home() {
             </div>
           </div>
         )}
-
         {/* Game HUD */}
         <div className="w-full flex flex-col items-center gap-2 mb-4 pt-4">
           <div className="flex flex-col sm:flex-row gap-4 text-pixel-green text-base font-bold items-center">
-            {/* Score and High Score display */}
             <div className="flex gap-6">
               <span>Score: <span className="text-pixel-yellow bg-black px-1 rounded font-bold">{score.toString().padStart(6, "0")}</span></span>
               <span>High Score: <span className="text-pixel-orange bg-black px-1 rounded font-bold">{highScore.toString().padStart(6, "0")}</span></span>
@@ -570,8 +550,6 @@ export default function Home() {
               </button>
             </div>
           </div>
-          
-          {/* Instructions */}
           {showInstructions && (
             <div className="pixel-border bg-pixel-yellow text-pixel-green p-3 text-xs max-w-md text-center animate-fade-in-out">
               <div className="font-bold mb-2">How to Play:</div>
@@ -581,7 +559,6 @@ export default function Home() {
               <div>Dodge job obstacles to earn points and unlock sections!</div>
             </div>
           )}
-          
           {playing && pointsToNext !== null ? (
             <div className="text-lg font-bold text-pixel-yellow bg-black bg-opacity-80 px-4 py-2 rounded mb-2">
               {pointsToNext} more to unlock <span className="text-pixel-orange">{nextSectionLabel}</span>
@@ -591,9 +568,16 @@ export default function Home() {
               🎉 All sections unlocked! 🎉
             </div>
           )}
-
+          {playing && (
+            <button
+              onClick={() => setPlaying(false)}
+              className="px-3 py-1 text-xs bg-pixel-red text-pixel-yellow pixel-border hover:bg-pixel-orange transition-colors font-bold mt-2"
+              title="Close game and return to start screen"
+            >
+              Close Game
+            </button>
+          )}
         </div>
-
         {/* Play button or Mini-game */}
         {!playing && !gameOver && (
           <div className="flex flex-col items-center gap-4">
@@ -609,7 +593,6 @@ export default function Home() {
             </div>
           </div>
         )}
-
         {playing && (
           <MiniGame
             onScore={handleScore}
@@ -630,25 +613,20 @@ export default function Home() {
             highScore={highScore}
           />
         )}
-
         {gameOver && (
           <div className="flex flex-col items-center justify-center w-full">
             <div className="text-2xl text-pixel-red font-bold mb-4 animate-bounce">You have been caught by HR!</div>
-            
-            {/* High Score Celebration */}
             {newHighScore && (
               <div className="text-xl text-pixel-yellow font-bold mb-4 animate-pulse">
                 🏆 New High Score! 🏆
               </div>
             )}
-            
             <div className="text-sm text-pixel-foreground mb-4">
               Final Score: <span className="text-pixel-yellow font-bold">{score.toString().padStart(6, "0")}</span>
             </div>
             <div className="text-xs text-pixel-green mb-4">
               Tired of playing? You can also click the section buttons below to view the portfolio.
             </div>
-            
             <button
               className="pixel-border bg-gradient-to-r from-pixel-green to-pixel-yellow text-pixel-yellow text-lg px-8 py-4 hover:from-pixel-orange hover:to-pixel-yellow transition-all duration-300 transform hover:scale-105"
               onClick={handleRestart}
@@ -657,7 +635,6 @@ export default function Home() {
             </button>
           </div>
         )}
-
         {/* Section Navigation */}
         <div className="flex flex-row flex-wrap gap-2 mt-4 mb-2 justify-center max-w-4xl w-full px-2">
           {sections.map((section, idx) => {
@@ -677,14 +654,11 @@ export default function Home() {
             );
           })}
         </div>
-
         {/* Section Modal */}
         {modalSection !== null && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
             <div className="pixel-border bg-pixel-yellow text-pixel-foreground p-6 max-w-4xl max-h-[80vh] overflow-y-auto relative mx-auto">
               {sections[modalSection].content}
-              
-              {/* Close button */}
               {showCloseButton && (
                 <div className="flex justify-center mt-6">
                   <button
@@ -699,16 +673,7 @@ export default function Home() {
             </div>
           </div>
         )}
-
-        {/* Add a hint below the section navigation */}
-        <div className="w-full flex justify-center mt-2 mb-4">
-          <span className="text-xs text-pixel-green bg-black bg-opacity-80 px-3 py-1 rounded">
-            Tip: You can also click the section buttons directly if you get tired of playing.
-          </span>
-        </div>
       </main>
-
-      {/* Footer */}
       <footer className="w-full flex justify-center items-center pixel-border bg-gradient-to-r from-pixel-green to-pixel-yellow py-3 mt-4">
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 text-xs text-pixel-yellow items-center">
           <div className="flex gap-4">
