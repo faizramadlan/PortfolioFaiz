@@ -508,7 +508,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden">
+      <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden mb-24">
 
 
         {/* Fireworks Animation */}
@@ -659,7 +659,7 @@ export default function Home() {
         )}
 
         {/* Section Navigation */}
-        <div className="flex flex-row gap-2 mt-4 mb-2 flex-wrap justify-center max-w-4xl">
+        <div className="fixed bottom-0 left-0 w-full z-50 bg-black py-2 border-t border-pixel-green overflow-x-auto flex justify-center gap-2">
           {sections.map((section, idx) => {
             return (
               <button
