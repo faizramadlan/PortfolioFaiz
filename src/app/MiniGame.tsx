@@ -273,8 +273,8 @@ export default function MiniGame({
   return (
     <div
       id="minigame-area"
-      className="relative w-full flex justify-center items-center"
-      style={{ height: GAME_HEIGHT, maxWidth: GAME_WIDTH, margin: "0 auto" }}
+      className="relative flex justify-center items-center w-full max-w-xs sm:max-w-md md:max-w-lg"
+      style={{ height: GAME_HEIGHT, margin: "0 auto" }}
     >
       <div
         className="absolute left-0 right-0"
