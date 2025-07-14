@@ -578,6 +578,7 @@ export default function Home() {
             <div className="pixel-border bg-pixel-yellow text-pixel-green p-3 text-xs max-w-md text-center animate-fade-in-out">
               <div className="font-bold mb-2">How to Play:</div>
               <div>Press <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">Space</kbd> or <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">↑</kbd> to jump</div>
+              <div>Tap the game area to jump (on mobile)</div>
               <div>Press <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">↓</kbd> or <kbd className="bg-pixel-green text-pixel-yellow px-1 rounded">S</kbd> to crouch</div>
               <div>Dodge job obstacles to earn points and unlock sections!</div>
             </div>
@@ -701,7 +702,7 @@ export default function Home() {
         {/* Add a hint below the section navigation */}
         <div className="w-full flex justify-center mt-2 mb-4">
           <span className="text-xs text-pixel-green bg-black bg-opacity-80 px-3 py-1 rounded">
-            Tip: You can also click the section buttons below directly if you get tired of playing.
+            Tip: You can also click the section buttons directly if you get tired of playing.
           </span>
         </div>
       </main>

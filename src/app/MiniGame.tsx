@@ -121,6 +121,26 @@ export default function MiniGame({
     };
   }, [jump, crouch, playing]);
 
+  // Add tap-to-jump support for mobile
+  useEffect(() => {
+    if (!playing) return;
+    const handleTap = (e: TouchEvent) => {
+      e.preventDefault();
+      if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+        jump();
+      }
+    };
+    const gameArea = document.getElementById('minigame-area');
+    if (gameArea) {
+      gameArea.addEventListener('touchstart', handleTap);
+    }
+    return () => {
+      if (gameArea) {
+        gameArea.removeEventListener('touchstart', handleTap);
+      }
+    };
+  }, [playing, jump]);
+
   useEffect(() => {
     if (!playing || gameOver) return;
     let anim: number;
@@ -254,6 +274,7 @@ export default function MiniGame({
 
   return (
     <div
+      id="minigame-area"
       className="relative w-full flex justify-center items-center"
       style={{ height: GAME_HEIGHT, maxWidth: GAME_WIDTH, margin: "0 auto" }}
     >
