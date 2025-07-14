@@ -508,7 +508,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden mb-24">
+      <main className="flex flex-col items-center justify-center min-h-screen w-full h-screen bg-pixel gap-4 p-0 m-0 overflow-hidden">
 
 
         {/* Fireworks Animation */}
@@ -659,19 +659,19 @@ export default function Home() {
         )}
 
         {/* Section Navigation */}
-        <div className="fixed bottom-0 left-0 w-full z-50 bg-black py-2 border-t border-pixel-green overflow-x-auto flex justify-center gap-2">
+        <div className="flex flex-row flex-wrap gap-2 mt-4 mb-2 justify-center max-w-4xl w-full px-2">
           {sections.map((section, idx) => {
             return (
               <button
                 key={section.id}
-                className={`pixel-border px-4 py-2 text-xs font-bold min-w-[120px] transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-pixel-green to-pixel-yellow text-pixel-yellow hover:from-pixel-orange hover:to-pixel-yellow`}
+                className="pixel-border px-2 py-1 text-xs md:text-base md:px-4 md:py-2 font-bold min-w-[100px] md:min-w-[120px] transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-pixel-green to-pixel-yellow text-pixel-yellow hover:from-pixel-orange hover:to-pixel-yellow"
                 onClick={() => handleSectionClick(idx)}
                 title={`View ${section.label}`}
               >
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-sm">{section.icon}</span>
-                  <span>{section.label}</span>
-                  <span className="text-xs">✅</span>
+                <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <span className="text-sm md:text-base">{section.icon}</span>
+                  <span className="truncate">{section.label}</span>
+                  <span className="text-xs md:text-base">✅</span>
                 </div>
               </button>
             );
