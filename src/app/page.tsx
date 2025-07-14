@@ -329,6 +329,7 @@ const prologueLines = [
 ];
 
 // Score thresholds for section unlocks
+const SECTION_SCORES = [0, 1200, 3000, 6000, 10000, 15000, 21000];
 const SECTION_SCORES = [800, 1800, 3200, 5000, 7000, 9500];
 
 export default function Home() {
@@ -646,6 +647,9 @@ export default function Home() {
             
             <div className="text-sm text-pixel-foreground mb-4">
               Final Score: <span className="text-pixel-yellow font-bold">{score.toString().padStart(6, "0")}</span>
+            </div>
+            <div className="text-xs text-pixel-green mb-4">
+              Tired of playing? You can also click the section buttons below to view the portfolio.
             </div>
             
             <button
