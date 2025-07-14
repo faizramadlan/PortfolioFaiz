@@ -72,7 +72,6 @@ export default function MiniGame({
   const lastObstacleX = useRef(GAME_WIDTH);
   const triggeredMilestones = useRef<Set<number>>(new Set());
   const [pendingMilestones, setPendingMilestones] = useState<number[]>([]);
-  const [triggeredMarker, setTriggeredMarker] = useState<number|null>(null);
 
   useEffect(() => {
     const hs = sessionStorage.getItem("minigame-highscore");
@@ -255,7 +254,6 @@ export default function MiniGame({
       hasInitialized.current = true;
       lastReportedScore.current = 0;
       setDistance(0);
-      setTriggeredMarker(null);
     }
   }, [playing, gameOver]);
 

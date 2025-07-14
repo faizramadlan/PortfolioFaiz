@@ -79,7 +79,7 @@ const sections = [
     icon: "💼",
     content: (
       <section id="experience" className="pixel-border p-6 bg-gradient-to-br from-pixel-red to-pixel-orange text-pixel-foreground w-full max-w-3xl">
-        <h3 className="text-pixel-yellow text-xl mb-4 flex items-center gap-3">
+        <h3 className="text-pixel-green text-xl mb-4 flex items-center gap-3">
           <span className="text-2xl">💼</span>
           Experience
         </h3>
@@ -317,6 +317,9 @@ const sections = [
   },
 ];
 
+// Score thresholds for section unlocks
+const SECTION_SCORES = [800, 1800, 3200, 5000, 7000, 9500];
+
 // Prologue lines for the funny intro
 const prologueLines = [
   "Help this jobseeker to...",
@@ -327,9 +330,6 @@ const prologueLines = [
   "🚀 Land that dream job!",
   "Ready? Let's go! 🎯"
 ];
-
-// Score thresholds for section unlocks
-const SECTION_SCORES = [800, 1800, 3200, 5000, 7000, 9500];
 
 export default function Home() {
   // Game state
@@ -345,11 +345,10 @@ export default function Home() {
   const [countdown, setCountdown] = useState<number|null>(null);
   const [newHighScore, setNewHighScore] = useState(false);
   const [showCloseButton, setShowCloseButton] = useState(false);
-  const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
-  const [showPrologue, setShowPrologue] = useState(false);
-  const [prologueStep, setPrologueStep] = useState(0);
   const [isFirstGame, setIsFirstGame] = useState(true);
   const [shownSections, setShownSections] = useState<number[]>([]);
+  const [showPrologue, setShowPrologue] = useState(false);
+  const [prologueStep, setPrologueStep] = useState(0);
 
   // Reset state on page load
   useEffect(() => {
@@ -363,7 +362,6 @@ export default function Home() {
     setGameOver(false);
     setPaused(false);
     setModalSection(null);
-    setHasPlayedOnce(false);
     setIsFirstGame(true); // Reset for new game
     setShownSections([]); // Reset shown sections on page load
   }, []);
@@ -407,22 +405,6 @@ export default function Home() {
     }
   }, [playing, score, highScore, modalSection]);
 
-  // Prologue sequence logic
-  useEffect(() => {
-    if (showPrologue && prologueStep < prologueLines.length) {
-      const timer = setTimeout(() => {
-        setPrologueStep(prev => prev + 1);
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else if (showPrologue && prologueStep >= prologueLines.length) {
-      setTimeout(() => {
-        setShowPrologue(false);
-        setPlaying(true);
-        setIsFirstGame(false);
-      }, 1000);
-    }
-  }, [showPrologue, prologueStep, prologueLines.length]);
-
   // High score celebration
   useEffect(() => {
     if (score > prevHighScore.current && score === highScore && score !== 0) {
@@ -444,6 +426,22 @@ export default function Home() {
     }
   }, [countdown]);
 
+  // Prologue logic
+  useEffect(() => {
+    if (showPrologue && prologueStep < prologueLines.length) {
+      const timer = setTimeout(() => {
+        setPrologueStep(prev => prev + 1);
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else if (showPrologue && prologueStep >= prologueLines.length) {
+      setTimeout(() => {
+        setShowPrologue(false);
+        setPlaying(true);
+        setIsFirstGame(false);
+      }, 1000);
+    }
+  }, [showPrologue, prologueStep]);
+
   // Game event handlers
   const handleGameOver = () => {
     setGameOver(true);
@@ -456,7 +454,6 @@ export default function Home() {
     setPaused(false);
     setModalSection(null);
     setNewHighScore(false);
-    setHasPlayedOnce(true);
     // Do NOT reset shownSections here
   };
 
@@ -534,10 +531,11 @@ export default function Home() {
           </div>
         )}
 
+        {/* Prologue Overlay */}
         {showPrologue && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-            <div className="text-center text-pixel-yellow">
-              <div className="text-2xl font-bold mb-4 animate-pulse">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+            <div className="text-center text-pixel-yellow px-4">
+              <div className="text-2xl font-bold mb-4 animate-pulse" style={{wordBreak: 'break-word'}}>
                 {prologueLines[prologueStep]}
               </div>
               <div className="text-sm text-pixel-green">
