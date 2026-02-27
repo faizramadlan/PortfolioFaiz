@@ -11,7 +11,7 @@ export default function Projects() {
         },
         {
             id: "00000110",
-            name: "IAMA DASHBOARD",
+            name: "ROBOT AUTOMATION DASHBOARD",
             description: "Built real-time monitoring dashboard for 50+ automation bots.",
             period: "2025",
             tags: ["NEXT.JS", "PRISMA", "TYPESCRIPT"],
