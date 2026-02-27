@@ -2,47 +2,16 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const GAME_WIDTH = 600;
-const GAME_HEIGHT = 220;
-const GROUND_Y = 170;
-const JUMP_HEIGHT = 90;
-const CROUCH_HEIGHT = 24;
-const GRAVITY = 4;
-const OBSTACLE_WIDTH = 28;
-const OBSTACLE_HEIGHT = 40;
+const GAME_HEIGHT = 300;
+const GRAVITY = 0.5;
+const FLAP_STRENGTH = -8;
+const PIPE_WIDTH = 50;
+const PIPE_SPEED = 3.5;
+const HOLE_HEIGHT = 120;
 const CHAR_WIDTH = 36;
 const CHAR_HEIGHT = 36;
-
-function randomId() {
-  return Math.random().toString(36).slice(2, 10);
-}
-
-// Realistic jobseeker obstacles
-const OBSTACLE_EMOJIS = [
-  "📄", // Rejection letter
-  "⏰", // Time pressure
-  "💸", // Low salary offer
-  "🚫", // Application rejected
-  "😰", // Interview anxiety
-  "📧", // No response email
-  "🎭", // Office politics
-  "📊", // Tough competition
-  "💼", // Overqualified
-  "🔒", // Job requirements mismatch
-  "⏳", // Long hiring process
-  "📱", // Ghosting recruiter
-  "🎯", // Unrealistic expectations
-  "📋", // Endless paperwork
-  "🤖", // AI screening
-  "📞", // No callback
-  "💻", // Technical interview fail
-  "📚", // Skills gap
-  "🏢", // Toxic workplace
-  "💰", // Budget cuts
-];
-
-function getRandomObstacleEmoji() {
-  return OBSTACLE_EMOJIS[Math.floor(Math.random() * OBSTACLE_EMOJIS.length)];
-}
+const CHAR_X = 100;
+const SPAWN_INTERVAL_X = 250;
 
 export default function MiniGame({
   onScore, playing, onGameOver, sectionMilestones, onMilestoneReached, highScore
@@ -54,272 +23,254 @@ export default function MiniGame({
   onMilestoneReached: (index: number) => void;
   highScore: number;
 }) {
-  const [charY, setCharY] = useState(GROUND_Y);
-  const [jumping, setJumping] = useState(false);
-  const [crouching, setCrouching] = useState(false);
-  const [velocity, setVelocity] = useState(0);
-  const [obstacles, setObstacles] = useState<{x: number, y: number, high: boolean, id: string, emoji: string}[]>([]);
-  const [particles, setParticles] = useState<{x: number, y: number, id: string}[]>([]);
-  const [score, setScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
-  const [distance, setDistance] = useState(0);
-  const frame = useRef(0);
-  const justDied = useRef(false);
-  const hitThisFrame = useRef(false);
-  const hasInitialized = useRef(false);
-  const lastReportedScore = useRef(0);
-  const nextObstacleGap = useRef(0);
-  const lastObstacleX = useRef(GAME_WIDTH);
-  const triggeredMilestones = useRef<Set<number>>(new Set());
-  const [pendingMilestones, setPendingMilestones] = useState<number[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
 
+  const [charY, setCharY] = useState(GAME_HEIGHT / 2);
+  const [velocity, setVelocity] = useState(0);
+  const [pipes, setPipes] = useState<{ x: number, gapTop: number, passed: boolean, id: string }[]>([]);
+
+  const charYRef = useRef(GAME_HEIGHT / 2);
+  const velRef = useRef(0);
+  const pipesRef = useRef<{ x: number, gapTop: number, passed: boolean, id: string }[]>([]);
+  const scoreRef = useRef(0);
+  const gameOverRef = useRef(false);
+  const reqRef = useRef<number>(undefined);
+  const distanceRef = useRef(0);
+
+  // Track milestones
+  const triggeredMilestones = useRef<Set<number>>(new Set());
+
+  // Init highscore
   useEffect(() => {
     const hs = sessionStorage.getItem("minigame-highscore");
-    if (hs) {
-      const storedHighScore = Number(hs);
-      if (storedHighScore > highScore) {
-        onScore(storedHighScore);
-      }
+    if (hs && Number(hs) > highScore) {
+      onScore(Number(hs));
     }
   }, [highScore, onScore]);
 
+  // Scaling
   useEffect(() => {
-    if (score !== lastReportedScore.current) {
-      lastReportedScore.current = score;
-      onScore(score);
-    }
-  }, [score, onScore]);
+    const handleResize = () => {
+      if (containerRef.current) {
+        const parentWidth = containerRef.current.parentElement?.clientWidth || window.innerWidth;
+        setScale(Math.min(1, Math.max(0.3, (parentWidth - 32) / GAME_WIDTH)));
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const jump = useCallback(() => {
-    if (!jumping && charY === GROUND_Y && !gameOver && playing && !crouching) {
-      setJumping(true);
-      setVelocity(-JUMP_HEIGHT);
-    }
-  }, [jumping, charY, gameOver, playing, crouching]);
-
-  const crouch = useCallback((down: boolean) => {
-    if (!gameOver && playing) {
-      setCrouching(down);
-    }
-  }, [gameOver, playing]);
+  // Controls
+  const flap = useCallback(() => {
+    if (gameOverRef.current || !playing) return;
+    velRef.current = FLAP_STRENGTH;
+    setVelocity(FLAP_STRENGTH);
+  }, [playing]);
 
   useEffect(() => {
     if (!playing) return;
     const handleDown = (e: KeyboardEvent) => {
-      if (e.code === "Space" || e.code === "ArrowUp") jump();
-      if (e.code === "ArrowDown" || e.code === "KeyS") crouch(true);
+      if (e.code === "Space" || e.key === " ") {
+        if (e.target === document.body || (e.target as HTMLElement).tagName === "BUTTON") {
+          e.preventDefault();
+        }
+        flap();
+      }
     };
-    const handleUp = (e: KeyboardEvent) => {
-      if (e.code === "ArrowDown" || e.code === "KeyS") crouch(false);
-    };
-    window.addEventListener("keydown", handleDown);
-    window.addEventListener("keyup", handleUp);
-    return () => {
-      window.removeEventListener("keydown", handleDown);
-      window.removeEventListener("keyup", handleUp);
-    };
-  }, [jump, crouch, playing]);
+    window.addEventListener("keydown", handleDown, { passive: false });
+    return () => window.removeEventListener("keydown", handleDown);
+  }, [flap, playing]);
 
-  // Add tap-to-jump support for mobile
   useEffect(() => {
     if (!playing) return;
     const handleTap = (e: TouchEvent) => {
       e.preventDefault();
-      if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-        jump();
-      }
+      flap();
     };
-    const gameArea = document.getElementById('minigame-area');
-    if (gameArea) {
-      gameArea.addEventListener('touchstart', handleTap);
+    const area = document.getElementById('minigame-area');
+    if (area) {
+      area.addEventListener('touchstart', handleTap, { passive: false });
+      return () => area.removeEventListener('touchstart', handleTap);
     }
-    return () => {
-      if (gameArea) {
-        gameArea.removeEventListener('touchstart', handleTap);
-      }
-    };
-  }, [playing, jump]);
+  }, [flap, playing]);
 
+  // Game Reset on Start
   useEffect(() => {
-    if (!playing || gameOver) return;
-    let anim: number;
-    function loop() {
-      frame.current++;
-      hitThisFrame.current = false;
-      if (jumping) {
-        setCharY((y) => {
-          const nextY = y + velocity / 8;
-          if (nextY >= GROUND_Y) {
-            setJumping(false);
-            setVelocity(0);
-            return GROUND_Y;
-          }
-          setVelocity((v) => v + GRAVITY);
-          return nextY;
-        });
-      }
-      setObstacles((obs) =>
-        obs
-          .map((o) => ({ ...o, x: o.x - 4 }))
-          .filter((o) => o.x + OBSTACLE_WIDTH > 0)
-      );
-      setParticles((ps) =>
-        ps
-          .map((p) => ({ ...p, y: p.y - 2 }))
-          .filter((p) => p.y > 0)
-      );
-      setDistance((d) => d + 4);
-      lastObstacleX.current -= 4;
-      if (lastObstacleX.current <= 0) lastObstacleX.current = 0;
-      if (lastObstacleX.current === 0 || nextObstacleGap.current === 0) {
-        let gap = 180 + Math.floor(Math.random() * 140);
-        const upcomingMilestones = sectionMilestones
-          .map(m => GAME_WIDTH + m.score * 0.8 - distance)
-          .filter(x => x > GAME_WIDTH && x < GAME_WIDTH + 600);
-        for (const mx of upcomingMilestones) {
-          if (Math.abs(mx - (GAME_WIDTH + gap)) < 60) {
-            gap += 80;
-          }
-        }
-        nextObstacleGap.current = gap;
-        lastObstacleX.current = GAME_WIDTH + gap;
-        setObstacles((obs) => {
-          if (obs.length === 0 || obs[obs.length - 1].x < GAME_WIDTH - 120) {
-            return [
-              ...obs,
-              {
-                x: GAME_WIDTH,
-                y: GROUND_Y,
-                high: false,
-                id: randomId(),
-                emoji: getRandomObstacleEmoji(),
-              },
-            ];
-          }
-          return obs;
-        });
-      } else {
-        nextObstacleGap.current -= 4;
-      }
-      setObstacles((obs) => {
-        let hit = false;
-        return obs.filter((o) => {
-          if (
-            !hitThisFrame.current &&
-            o.x < 40 + CHAR_WIDTH &&
-            o.x + OBSTACLE_WIDTH > 40 &&
-            charY + (crouching ? CROUCH_HEIGHT : CHAR_HEIGHT) > o.y - OBSTACLE_HEIGHT / 2 &&
-            charY < o.y + OBSTACLE_HEIGHT / 2 &&
-            !jumping && !crouching
-          ) {
-            if (!hit) {
-              hitThisFrame.current = true;
-              hit = true;
-              setGameOver(true);
-              return false;
-            }
-          }
-          return true;
-        });
-      });
-      if (frame.current % 2 === 0) {
-        setScore((s) => s + 10);
-      }
-      anim = requestAnimationFrame(loop);
-    }
-    anim = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(anim);
-  }, [jumping, charY, velocity, playing, gameOver, crouching, sectionMilestones, distance, score]);
-
-  useEffect(() => {
-    if (gameOver) {
-      onGameOver();
-    }
-  }, [gameOver, onGameOver]);
-
-  useEffect(() => {
-    if (!playing) return;
-    if (!hasInitialized.current || gameOver) {
-      setCharY(GROUND_Y);
-      setJumping(false);
-      setCrouching(false);
-      setVelocity(0);
-      setObstacles([]);
-      setScore(0);
-      setGameOver(false);
-      setParticles([]);
-      justDied.current = false;
-      hitThisFrame.current = false;
-      frame.current = 0;
-      hasInitialized.current = true;
-      lastReportedScore.current = 0;
-      setDistance(0);
-    }
-  }, [playing, gameOver]);
-
-  useEffect(() => {
-    if (pendingMilestones.length > 0) {
-      pendingMilestones.forEach((idx) => onMilestoneReached(idx));
-      setPendingMilestones([]);
-    }
-  }, [pendingMilestones, onMilestoneReached]);
-
-  useEffect(() => {
-    if (!playing || gameOver) {
+    if (playing) {
+      charYRef.current = GAME_HEIGHT / 2;
+      velRef.current = 0;
+      pipesRef.current = [];
+      scoreRef.current = 0;
+      distanceRef.current = 0;
+      gameOverRef.current = false;
       triggeredMilestones.current.clear();
+
+      setCharY(GAME_HEIGHT / 2);
+      setVelocity(0);
+      setPipes([]);
     }
-  }, [playing, gameOver]);
+  }, [playing]);
+
+  // Game Loop
+  useEffect(() => {
+    if (!playing || gameOverRef.current) return;
+
+    let lastTime = performance.now();
+
+    const update = (time: number) => {
+      if (gameOverRef.current) return;
+      const dt = time - lastTime;
+      lastTime = time;
+
+      const dtMult = Math.min(dt / 16.666, 2.5);
+
+      velRef.current += GRAVITY * dtMult;
+      charYRef.current += velRef.current * dtMult;
+
+      distanceRef.current += PIPE_SPEED * dtMult;
+      if (distanceRef.current > SPAWN_INTERVAL_X) {
+        distanceRef.current = 0;
+        const gapTop = Math.random() * (GAME_HEIGHT - HOLE_HEIGHT - 60) + 30;
+        pipesRef.current.push({
+          x: GAME_WIDTH,
+          gapTop,
+          passed: false,
+          id: Math.random().toString(36).substring(2, 9)
+        });
+      }
+
+      pipesRef.current = pipesRef.current.map(p => {
+        p.x -= PIPE_SPEED * dtMult;
+        return p;
+      }).filter(p => p.x + PIPE_WIDTH > 0);
+
+      const cy = charYRef.current;
+      const r_char = { x: CHAR_X, y: cy, w: CHAR_WIDTH - 6, h: CHAR_HEIGHT - 6 }; // hitbox 
+
+      if (cy < 0 || cy + CHAR_HEIGHT > GAME_HEIGHT) {
+        gameOverRef.current = true;
+      }
+
+      pipesRef.current.forEach(p => {
+        // top pipe
+        if (r_char.x < p.x + PIPE_WIDTH && r_char.x + r_char.w > p.x && r_char.y < p.gapTop) {
+          gameOverRef.current = true;
+        }
+        // bottom pipe
+        if (r_char.x < p.x + PIPE_WIDTH && r_char.x + r_char.w > p.x && r_char.y + r_char.h > p.gapTop + HOLE_HEIGHT) {
+          gameOverRef.current = true;
+        }
+
+        // Score 
+        if (!p.passed && p.x + PIPE_WIDTH < r_char.x) {
+          p.passed = true;
+          // Increment score
+          scoreRef.current += 10;
+          onScore(scoreRef.current);
+
+          // Check milestones
+          sectionMilestones.forEach((m, idx) => {
+            if (scoreRef.current >= m.score && !triggeredMilestones.current.has(idx)) {
+              triggeredMilestones.current.add(idx);
+              onMilestoneReached(idx);
+            }
+          });
+        }
+      });
+
+      setCharY(charYRef.current);
+      setPipes([...pipesRef.current]);
+      setVelocity(velRef.current);
+
+      if (gameOverRef.current) {
+        onGameOver();
+      } else {
+        reqRef.current = requestAnimationFrame(update);
+      }
+    };
+
+    reqRef.current = requestAnimationFrame(update);
+    return () => {
+      if (reqRef.current) cancelAnimationFrame(reqRef.current);
+    };
+  }, [playing, onGameOver, onScore, sectionMilestones, onMilestoneReached]);
 
   return (
     <div
-      id="minigame-area"
-      className="relative flex justify-center items-center w-full max-w-xs sm:max-w-md md:max-w-lg"
-      style={{ height: GAME_HEIGHT, margin: "0 auto" }}
+      className="w-full flex justify-center items-center overflow-hidden brutal-border border-x-0 bg-[#87CEEB] relative"
+      ref={containerRef}
+      style={{ height: GAME_HEIGHT * scale }}
     >
-      <div
-        className="absolute left-0 right-0"
-        style={{ top: GROUND_Y + CHAR_HEIGHT, height: 10, background: "#43B047" }}
-      />
-      <div
-        className="absolute rounded-full bg-black/30 blur-sm"
-        style={{ left: 48, top: charY + (crouching ? CROUCH_HEIGHT : CHAR_HEIGHT) - 4, width: 36, height: 10, opacity: jumping ? 0.3 : 0.6, transition: 'top 0.1s, opacity 0.1s' }}
-      />
-      <div
-        className="absolute text-5xl select-none transition-transform duration-100"
-        style={{ left: 40, top: charY, transform: `scaleX(-1) ${jumping ? 'rotate(-20deg)' : ''}` }}
-      >
-        <span style={{ display: "inline-block", transition: "transform 0.1s", transform: crouching ? "scaleY(0.5) scaleX(-1)" : "scaleY(1) scaleX(-1)" }}>
-          👨‍💼
-        </span>
+      {/* Clouds / Background spans entire width */}
+      <div className="absolute inset-0 opacity-50 pointer-events-none">
+        <div className="absolute top-10 left-[10%] w-20 h-8 bg-white rounded-full blur-md opacity-80" />
+        <div className="absolute top-20 left-[60%] w-32 h-12 bg-white rounded-full blur-md opacity-70" />
+        <div className="absolute top-8 left-[80%] w-16 h-6 bg-white rounded-full blur-md opacity-90" />
       </div>
-      {obstacles.map((o) => (
+
+      <div
+        id="minigame-area"
+        className="relative overflow-hidden"
+        style={{
+          width: GAME_WIDTH,
+          height: GAME_HEIGHT,
+          transform: `scale(${scale})`,
+          transformOrigin: "center center",
+          touchAction: "none"
+        }}
+      >
+
+        {/* Character */}
         <div
-          key={o.id}
-          className={`absolute text-4xl select-none transition-transform duration-200`}
-          style={{ left: o.x, top: o.y + 10 }}
+          className="absolute select-none transition-transform"
+          style={{
+            left: CHAR_X,
+            top: charY,
+            transform: `rotate(${Math.min(Math.max(velocity * 4, -25), 90)}deg)`
+          }}
         >
-          {o.emoji}
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="0" width="20" height="20" fill="#FBD000" shapeRendering="crispEdges" />
+            <rect x="0" y="20" width="36" height="16" fill="#049CD8" shapeRendering="crispEdges" />
+            <rect x="12" y="4" width="4" height="4" fill="#000" shapeRendering="crispEdges" />
+            <rect x="24" y="4" width="4" height="4" fill="#000" shapeRendering="crispEdges" />
+            <rect x="16" y="12" width="12" height="4" fill="#000" shapeRendering="crispEdges" />
+          </svg>
         </div>
-      ))}
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute text-lg select-none animate-ping"
-          style={{ left: p.x, top: p.y, color: '#FFC107' }}
-        >
-          ✨
-        </div>
-      ))}
-      {!playing && !gameOver && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-pixel-yellow text-2xl font-bold z-10">
-          PAUSED
-        </div>
-      )}
-      {gameOver && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-pixel-yellow text-2xl font-bold z-20">
-          GAME OVER
-        </div>
-      )}
+
+        {/* Pipes */}
+        {pipes.map(p => (
+          <div key={p.id}>
+            {/* Top Pipe */}
+            <div
+              className="absolute bg-[#73bf2e] border-4 border-black"
+              style={{
+                left: p.x,
+                top: -4,
+                width: PIPE_WIDTH,
+                height: p.gapTop + 4
+              }}
+            >
+              <div className="absolute bottom-0 left-[-4px] right-[-4px] h-6 bg-[#73bf2e] border-4 border-black border-b-0" />
+            </div>
+
+            {/* Bottom Pipe */}
+            <div
+              className="absolute bg-[#73bf2e] border-4 border-black"
+              style={{
+                left: p.x,
+                top: p.gapTop + HOLE_HEIGHT,
+                width: PIPE_WIDTH,
+                height: GAME_HEIGHT - (p.gapTop + HOLE_HEIGHT) + 4
+              }}
+            >
+              <div className="absolute top-0 left-[-4px] right-[-4px] h-6 bg-[#73bf2e] border-4 border-black border-t-0" />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
-} 
+}

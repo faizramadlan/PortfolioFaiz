@@ -1,19 +1,39 @@
 import "@fontsource/press-start-2p";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 
-export const metadata = {
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Faiz's Portfolio",
-  description: "Portfolio of Faiz Ramadlan - Technical Consultant & Full Stack Developer",
+  description: "Portfolio of Faiz Ramadlan - Technical Consultant & Full Stack Developer. A retro gamified interactive portfolio.",
+  keywords: ["Faiz Ramadlan", "Portfolio", "Technical Consultant", "Full-Stack Developer", "Next.js", "React", "TypeScript", "Gamified Portfolio", "Pixel Art"],
+  authors: [{ name: "Faiz Ramadlan" }],
+  creator: "Faiz Ramadlan",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://github.com/faizramadlan",
+    title: "Faiz's Portfolio",
+    description: "Portfolio of Faiz Ramadlan - Technical Consultant & Full Stack Developer. A retro gamified interactive portfolio.",
+    siteName: "Faiz's Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Faiz's Portfolio",
+    description: "Portfolio of Faiz Ramadlan - Technical Consultant & Full Stack Developer",
+  },
   icons: {
     icon: [
       {
-        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>",
+        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 10 h60 v20 h-40 v10 h30 v20 h-30 v30 h-20 z' fill='%231a1a1a'/></svg>",
         type: "image/svg+xml",
       },
     ],
   },
 };
+
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -21,13 +41,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-press-start bg-pixel text-pixel-foreground antialiased">
-        <nav className="w-full flex justify-center pixel-border bg-pixel-yellow py-3 mb-8">
-          <ul className="flex gap-8 text-pixel-green text-xs">
-            <li><Link href="/" className="hover:text-pixel-orange">Faiz&apos;s Portfolio</Link></li>
-          </ul>
-        </nav>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var theme = localStorage.getItem('theme');
+              if (theme === 'light') {
+                document.documentElement.classList.remove('dark');
+              } else {
+                document.documentElement.classList.add('dark');
+              }
+            })();
+          `
+        }} />
+      </head>
+      <body className={`${jakarta.className} antialiased`} suppressHydrationWarning>
         {children}
       </body>
     </html>
