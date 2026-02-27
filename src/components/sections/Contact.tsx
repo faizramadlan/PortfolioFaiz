@@ -10,7 +10,7 @@ export default function Contact() {
         <div>
             <div className="font-press-start text-[10px] opacity-60 tracking-widest mb-6">REACH OUT</div>
             <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-8">CONTACT</h3>
-            <div className="brutal-grid grid-cols-1 md:grid-cols-2">
+            <div className="brutal-grid grid-cols-2">
                 {links.map((link) => (
                     <a
                         key={link.label}
@@ -20,7 +20,7 @@ export default function Contact() {
                         className="brutal-border p-6 group flex flex-col hover:bg-[var(--foreground)] hover:text-[var(--background)] transition-colors"
                     >
                         <div className="font-press-start text-[10px] tracking-widest mb-3 opacity-40 group-hover:opacity-70">{link.label}</div>
-                        <div className="text-lg md:text-xl font-black uppercase tracking-tighter">{link.value}</div>
+                        <div className="text-sm md:text-xl font-black uppercase tracking-tighter break-all">{link.value}</div>
                     </a>
                 ))}
             </div>

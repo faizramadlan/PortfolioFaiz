@@ -24,7 +24,7 @@ export default function ToolsLanding() {
                         </div>
                     </div>
 
-                    <Link href="/" className="self-start mt-4 font-press-start text-[10px] hover:underline underline-offset-4 tracking-widest uppercase">
+                    <Link href="/" className="self-start mt-4 font-press-start text-[10px] hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors tracking-widest uppercase">
                         {'<'} RETURN HOME
                     </Link>
                 </div>

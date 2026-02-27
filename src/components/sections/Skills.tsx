@@ -10,7 +10,7 @@ export default function Skills() {
         <div>
             <div className="font-press-start text-[10px] opacity-60 tracking-widest mb-6">TECH STACK</div>
             <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-8">SKILLS</h3>
-            <div className="brutal-grid grid-cols-1 md:grid-cols-2">
+            <div className="brutal-grid grid-cols-2">
                 {categories.map((cat) => (
                     <div key={cat.label} className="brutal-border p-6">
                         <div className="font-press-start text-[10px] tracking-widest mb-4 opacity-60">{cat.label}</div>

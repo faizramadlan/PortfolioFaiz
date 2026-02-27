@@ -6,7 +6,8 @@ export default function Projects() {
             description: "Subscription-based CMS platform for Indonesian SMEs offering curated templates and self-service dashboards.",
             period: "2026",
             tags: ["NEXT.JS", "SUPABASE", "TAILWINDCSS"],
-            link: "https://semuabisajadi.online"
+            link: "https://semuabisajadi.online",
+            image: "/projects/semuabisa.png"
         },
         {
             id: "00000110",
@@ -66,6 +67,8 @@ export default function Projects() {
             description: "Developed a learning companion app for new Dota 2 players.",
             period: "2023",
             tags: ["VITE", "VUE", "PINIA", "RESTFUL API"],
+            link: "https://oslo-dota-frontend.vercel.app/",
+            image: "/projects/oslodota.png"
         },
     ];
 
@@ -78,22 +81,33 @@ export default function Projects() {
             <div className="font-press-start text-[10px] tracking-widest mb-4 opacity-60">PROFESSIONAL</div>
             <div className="brutal-grid grid-cols-1 md:grid-cols-2 mb-8">
                 {professional.map((project) => (
-                    <div key={project.id} className="brutal-border p-6 flex flex-col group cursor-default">
-                        <div className="flex justify-between items-start mb-3">
-                            <div className="font-press-start text-[10px] opacity-40 tracking-widest">{project.id}</div>
-                            {project.link && (
-                                <a href={project.link} target="_blank" rel="noreferrer" className="text-[10px] font-press-start hover:line-through transition-all opacity-60 hover:opacity-100 flex items-center gap-1">
-                                    VISIT <span className="text-[8px]">↗</span>
-                                </a>
-                            )}
-                        </div>
-                        <h4 className="text-lg md:text-xl font-black uppercase tracking-tighter mb-2 group-hover:bg-[var(--foreground)] group-hover:text-[var(--background)] group-hover:px-2 transition-all self-start">{project.name}</h4>
-                        <div className="font-press-start text-[10px] opacity-40 tracking-wider mb-3">{project.period}</div>
-                        <p className="text-sm opacity-70 mb-4 flex-grow">{project.description}</p>
-                        <div className="flex flex-wrap gap-2 mt-auto">
-                            {project.tags.map((tag) => (
-                                <span key={tag} className="brutal-tag">■ {tag}</span>
-                            ))}
+                    <div key={project.id} className="brutal-border p-6 flex flex-col group cursor-default relative overflow-hidden bg-[var(--card-bg)] z-0">
+                        {project.link && (
+                            <>
+                                <div
+                                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-20 bg-cover bg-top"
+                                    style={{ backgroundImage: `url('${(project as any).image || `https://s0.wp.com/mshots/v1/${encodeURIComponent(project.link)}?w=800`}')` }}
+                                />
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-[0.85] transition-opacity duration-300 -z-10 bg-[var(--background)] backdrop-blur-sm" />
+                            </>
+                        )}
+                        <div className="relative z-10 flex flex-col h-full pointer-events-none">
+                            <div className="flex justify-between items-start mb-3 pointer-events-auto">
+                                <div className="font-press-start text-[10px] opacity-40 tracking-widest">{project.id}</div>
+                                {project.link && (
+                                    <a href={project.link} target="_blank" rel="noreferrer" className="text-[10px] font-press-start hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors opacity-60 hover:opacity-100 flex items-center gap-1">
+                                        VISIT <span className="text-[8px]">↗</span>
+                                    </a>
+                                )}
+                            </div>
+                            <h4 className="text-lg md:text-xl font-black uppercase tracking-tighter mb-2 group-hover:bg-[var(--foreground)] group-hover:text-[var(--background)] group-hover:px-2 transition-all self-start pointer-events-auto">{project.name}</h4>
+                            <div className="font-press-start text-[10px] opacity-40 tracking-wider mb-3 pointer-events-auto">{project.period}</div>
+                            <p className="text-sm opacity-90 font-medium mb-4 flex-grow pointer-events-auto drop-shadow-sm">{project.description}</p>
+                            <div className="flex flex-wrap gap-2 mt-auto pointer-events-auto">
+                                {project.tags.map((tag) => (
+                                    <span key={tag} className="brutal-tag shadow-sm">■ {tag}</span>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -101,28 +115,42 @@ export default function Projects() {
 
             {/* Personal */}
             <div className="font-press-start text-[10px] tracking-widest mb-4 opacity-60">PERSONAL</div>
-            <div className="brutal-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                {personal.map((project) => (
-                    <div key={project.id} className="brutal-border p-6 flex flex-col group cursor-default">
-                        <div className="flex justify-between items-start mb-3">
-                            <div className="font-press-start text-[10px] opacity-40 tracking-widest">{project.id}</div>
-                            {/* Personal projects can also have links if added to data later */}
-                            {('link' in project) && (
-                                <a href={(project as { link?: string }).link} target="_blank" rel="noreferrer" className="text-[10px] font-press-start hover:line-through transition-all opacity-60 hover:opacity-100 flex items-center gap-1">
-                                    VISIT <span className="text-[8px]">↗</span>
-                                </a>
+            <div className="brutal-grid grid-cols-2 lg:grid-cols-4">
+                {personal.map((project) => {
+                    const hasLink = 'link' in project;
+                    const projLink = hasLink ? (project as any).link : '';
+                    return (
+                        <div key={project.id} className="brutal-border p-6 flex flex-col group cursor-default relative overflow-hidden bg-[var(--card-bg)] z-0">
+                            {hasLink && projLink && (
+                                <>
+                                    <div
+                                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-20 bg-cover bg-top"
+                                        style={{ backgroundImage: `url('${(project as any).image || `https://s0.wp.com/mshots/v1/${encodeURIComponent(projLink)}?w=800`}')` }}
+                                    />
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-[0.85] transition-opacity duration-300 -z-10 bg-[var(--background)] backdrop-blur-sm" />
+                                </>
                             )}
+                            <div className="relative z-10 flex flex-col h-full pointer-events-none">
+                                <div className="flex justify-between items-start mb-3 pointer-events-auto">
+                                    <div className="font-press-start text-[10px] opacity-40 tracking-widest">{project.id}</div>
+                                    {hasLink && projLink && (
+                                        <a href={projLink} target="_blank" rel="noreferrer" className="text-[10px] font-press-start hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors opacity-60 hover:opacity-100 flex items-center gap-1">
+                                            VISIT <span className="text-[8px]">↗</span>
+                                        </a>
+                                    )}
+                                </div>
+                                <h4 className="text-base md:text-lg font-black uppercase tracking-tighter mb-2 group-hover:bg-[var(--foreground)] group-hover:text-[var(--background)] group-hover:px-2 transition-all self-start pointer-events-auto">{project.name}</h4>
+                                <div className="font-press-start text-[10px] opacity-40 tracking-wider mb-3 pointer-events-auto">{project.period}</div>
+                                <p className="text-sm opacity-90 font-medium mb-4 flex-grow pointer-events-auto drop-shadow-sm">{project.description}</p>
+                                <div className="flex flex-wrap gap-2 mt-auto pointer-events-auto">
+                                    {project.tags.map((tag) => (
+                                        <span key={tag} className="brutal-tag shadow-sm">■ {tag}</span>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                        <h4 className="text-base md:text-lg font-black uppercase tracking-tighter mb-2 group-hover:bg-[var(--foreground)] group-hover:text-[var(--background)] group-hover:px-2 transition-all self-start">{project.name}</h4>
-                        <div className="font-press-start text-[10px] opacity-40 tracking-wider mb-3">{project.period}</div>
-                        <p className="text-sm opacity-70 mb-4 flex-grow">{project.description}</p>
-                        <div className="flex flex-wrap gap-2 mt-auto">
-                            {project.tags.map((tag) => (
-                                <span key={tag} className="brutal-tag">■ {tag}</span>
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
         </div>
     );

@@ -1,16 +1,24 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 
-const GAME_WIDTH = 600;
-const GAME_HEIGHT = 300;
+// Desktop (landscape) dimensions
+const DESKTOP_WIDTH = 800;
+const DESKTOP_HEIGHT = 400;
+// Mobile (portrait) dimensions — like original flappy bird
+const MOBILE_WIDTH = 360;
+const MOBILE_HEIGHT = 640;
+
+const MOBILE_BREAKPOINT = 1024;
+
 const GRAVITY = 0.5;
 const FLAP_STRENGTH = -8;
 const PIPE_WIDTH = 50;
 const PIPE_SPEED = 3.5;
-const HOLE_HEIGHT = 120;
+const HOLE_HEIGHT_DESKTOP = 140;
+const HOLE_HEIGHT_MOBILE = 160;
 const CHAR_WIDTH = 36;
 const CHAR_HEIGHT = 36;
-const CHAR_X = 100;
+const CHAR_X = 80;
 const SPAWN_INTERVAL_X = 250;
 
 export default function MiniGame({
@@ -25,6 +33,12 @@ export default function MiniGame({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Derived dimensions
+  const GAME_WIDTH = isMobile ? MOBILE_WIDTH : DESKTOP_WIDTH;
+  const GAME_HEIGHT = isMobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
+  const HOLE_HEIGHT = isMobile ? HOLE_HEIGHT_MOBILE : HOLE_HEIGHT_DESKTOP;
 
   const [charY, setCharY] = useState(GAME_HEIGHT / 2);
   const [velocity, setVelocity] = useState(0);
@@ -41,6 +55,20 @@ export default function MiniGame({
   // Track milestones
   const triggeredMilestones = useRef<Set<number>>(new Set());
 
+  // Track flap count
+  const flapCountRef = useRef(0);
+
+  // Refs for current dimensions (needed in game loop)
+  const gameWidthRef = useRef(GAME_WIDTH);
+  const gameHeightRef = useRef(GAME_HEIGHT);
+  const holeHeightRef = useRef(HOLE_HEIGHT);
+
+  useEffect(() => {
+    gameWidthRef.current = GAME_WIDTH;
+    gameHeightRef.current = GAME_HEIGHT;
+    holeHeightRef.current = HOLE_HEIGHT;
+  }, [GAME_WIDTH, GAME_HEIGHT, HOLE_HEIGHT]);
+
   // Init highscore
   useEffect(() => {
     const hs = sessionStorage.getItem("minigame-highscore");
@@ -49,12 +77,22 @@ export default function MiniGame({
     }
   }, [highScore, onScore]);
 
-  // Scaling
+  // Scaling + mobile detection
   useEffect(() => {
     const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      const mobile = screenWidth < MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
+
       if (containerRef.current) {
-        const parentWidth = containerRef.current.parentElement?.clientWidth || window.innerWidth;
-        setScale(Math.min(1, Math.max(0.3, (parentWidth - 32) / GAME_WIDTH)));
+        const parentWidth = containerRef.current.parentElement?.clientWidth || screenWidth;
+        const parentHeight = containerRef.current.parentElement?.clientHeight || window.innerHeight;
+        const gw = mobile ? MOBILE_WIDTH : DESKTOP_WIDTH;
+        const gh = mobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
+        // Scale to fit both width and height
+        const scaleW = Math.max(0.3, (parentWidth - 16) / gw);
+        const scaleH = Math.max(0.3, (parentHeight - 16) / gh);
+        setScale(Math.min(1, Math.min(scaleW, scaleH)));
       }
     };
     handleResize();
@@ -65,8 +103,10 @@ export default function MiniGame({
   // Controls
   const flap = useCallback(() => {
     if (gameOverRef.current || !playing) return;
-    velRef.current = FLAP_STRENGTH;
-    setVelocity(FLAP_STRENGTH);
+    const isSlowMo = flapCountRef.current < 4;
+    velRef.current = isSlowMo ? FLAP_STRENGTH * 0.5 : FLAP_STRENGTH;
+    flapCountRef.current += 1;
+    setVelocity(velRef.current);
   }, [playing]);
 
   useEffect(() => {
@@ -99,15 +139,16 @@ export default function MiniGame({
   // Game Reset on Start
   useEffect(() => {
     if (playing) {
-      charYRef.current = GAME_HEIGHT / 2;
+      charYRef.current = gameHeightRef.current / 2;
       velRef.current = 0;
       pipesRef.current = [];
       scoreRef.current = 0;
       distanceRef.current = 0;
       gameOverRef.current = false;
+      flapCountRef.current = 0;
       triggeredMilestones.current.clear();
 
-      setCharY(GAME_HEIGHT / 2);
+      setCharY(gameHeightRef.current / 2);
       setVelocity(0);
       setPipes([]);
     }
@@ -125,16 +166,21 @@ export default function MiniGame({
       lastTime = time;
 
       const dtMult = Math.min(dt / 16.666, 2.5);
+      const gw = gameWidthRef.current;
+      const gh = gameHeightRef.current;
+      const hh = holeHeightRef.current;
 
-      velRef.current += GRAVITY * dtMult;
+      const currentGravity = flapCountRef.current < 4 ? GRAVITY * 0.35 : GRAVITY;
+
+      velRef.current += currentGravity * dtMult;
       charYRef.current += velRef.current * dtMult;
 
       distanceRef.current += PIPE_SPEED * dtMult;
       if (distanceRef.current > SPAWN_INTERVAL_X) {
         distanceRef.current = 0;
-        const gapTop = Math.random() * (GAME_HEIGHT - HOLE_HEIGHT - 60) + 30;
+        const gapTop = Math.random() * (gh - hh - 60) + 30;
         pipesRef.current.push({
-          x: GAME_WIDTH,
+          x: gw,
           gapTop,
           passed: false,
           id: Math.random().toString(36).substring(2, 9)
@@ -149,7 +195,7 @@ export default function MiniGame({
       const cy = charYRef.current;
       const r_char = { x: CHAR_X, y: cy, w: CHAR_WIDTH - 6, h: CHAR_HEIGHT - 6 }; // hitbox 
 
-      if (cy < 0 || cy + CHAR_HEIGHT > GAME_HEIGHT) {
+      if (cy < 0 || cy + CHAR_HEIGHT > gh) {
         gameOverRef.current = true;
       }
 
@@ -159,7 +205,7 @@ export default function MiniGame({
           gameOverRef.current = true;
         }
         // bottom pipe
-        if (r_char.x < p.x + PIPE_WIDTH && r_char.x + r_char.w > p.x && r_char.y + r_char.h > p.gapTop + HOLE_HEIGHT) {
+        if (r_char.x < p.x + PIPE_WIDTH && r_char.x + r_char.w > p.x && r_char.y + r_char.h > p.gapTop + hh) {
           gameOverRef.current = true;
         }
 
@@ -199,9 +245,8 @@ export default function MiniGame({
 
   return (
     <div
-      className="w-full flex justify-center items-center overflow-hidden brutal-border border-x-0 bg-[#87CEEB] relative"
+      className="w-full flex-grow flex justify-center items-center overflow-hidden brutal-border border-x-0 bg-[#87CEEB] relative"
       ref={containerRef}
-      style={{ height: GAME_HEIGHT * scale }}
     >
       {/* Clouds / Background spans entire width */}
       <div className="absolute inset-0 opacity-50 pointer-events-none">

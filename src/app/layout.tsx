@@ -23,14 +23,6 @@ export const metadata: Metadata = {
     title: "Faiz's Portfolio",
     description: "Portfolio of Faiz Ramadlan - Technical Consultant & Full Stack Developer",
   },
-  icons: {
-    icon: [
-      {
-        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 10 h60 v20 h-40 v10 h30 v20 h-30 v30 h-20 z' fill='%231a1a1a'/></svg>",
-        type: "image/svg+xml",
-      },
-    ],
-  },
 };
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
@@ -41,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
         <script dangerouslySetInnerHTML={{
           __html: `
