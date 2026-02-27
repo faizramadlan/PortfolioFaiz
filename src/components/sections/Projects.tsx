@@ -108,7 +108,7 @@ export default function Projects() {
                             <div className="font-press-start text-[10px] opacity-40 tracking-widest">{project.id}</div>
                             {/* Personal projects can also have links if added to data later */}
                             {('link' in project) && (
-                                <a href={(project as any).link} target="_blank" rel="noreferrer" className="text-[10px] font-press-start hover:line-through transition-all opacity-60 hover:opacity-100 flex items-center gap-1">
+                                <a href={(project as { link?: string }).link} target="_blank" rel="noreferrer" className="text-[10px] font-press-start hover:line-through transition-all opacity-60 hover:opacity-100 flex items-center gap-1">
                                     VISIT <span className="text-[8px]">↗</span>
                                 </a>
                             )}
