@@ -17,10 +17,16 @@ export default function Contact() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="brutal-border p-6 group flex flex-col hover:bg-[var(--foreground)] hover:text-[var(--background)] transition-colors"
+                        className="brutal-border p-3 sm:p-6 group flex flex-col hover:bg-[var(--foreground)] hover:text-[var(--background)] transition-colors"
                     >
                         <div className="font-press-start text-[10px] tracking-widest mb-3 opacity-40 group-hover:opacity-70">{link.label}</div>
-                        <div className="text-sm md:text-xl font-black uppercase tracking-tighter break-all">{link.value}</div>
+                        <div className="text-[10px] sm:text-sm md:text-xl font-black uppercase tracking-tighter break-words">
+                            {link.label === "EMAIL" ? (
+                                <>RAMADLAN.FAIZ<wbr />@GMAIL.COM</>
+                            ) : (
+                                link.value
+                            )}
+                        </div>
                     </a>
                 ))}
             </div>

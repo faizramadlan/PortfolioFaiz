@@ -92,6 +92,7 @@ body {
   border: none;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 @media (min-width: 768px) {

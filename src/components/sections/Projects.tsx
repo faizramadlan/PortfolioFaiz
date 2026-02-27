@@ -120,7 +120,7 @@ export default function Projects() {
                     const hasLink = 'link' in project;
                     const projLink = hasLink ? (project as any).link : '';
                     return (
-                        <div key={project.id} className="brutal-border p-6 flex flex-col group cursor-default relative overflow-hidden bg-[var(--card-bg)] z-0">
+                        <div key={project.id} className="brutal-border p-3 sm:p-6 flex flex-col group cursor-default relative overflow-hidden bg-[var(--card-bg)] z-0">
                             {hasLink && projLink && (
                                 <>
                                     <div
