@@ -105,8 +105,8 @@ export default function Home() {
           FAIZ <span className="bg-[var(--foreground)] text-[var(--background)] px-1 md:px-2 py-0.5 inline-block">RAMADLAN</span>
         </div>
         <div className="flex items-center gap-2 md:gap-6 font-press-start text-[8px] md:text-xs uppercase tracking-wider flex-wrap justify-end">
-          <a href="#work" className="hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors">Work</a>
           <a href="#skills" className="hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors">Skills</a>
+          <a href="#work" className="hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors">Work</a>
           <a href="#contact" className="hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors">Contact</a>
           <a href="/tools" className="hover:bg-[var(--foreground)] hover:text-[var(--background)] px-1 transition-colors">Tools</a>
           <button
