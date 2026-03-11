@@ -43,3 +43,9 @@ next-env.d.ts
 # personal
 cv.md
 cv.pdf
+
+# devcards temp scripts
+cheatsheet.html
+parse-cheatsheet.js
+append-exercises.js
+append-exercises2.js
