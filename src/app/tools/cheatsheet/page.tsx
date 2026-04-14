@@ -424,7 +424,7 @@ export default function CheatsheetPage() {
     }, [activeTab, searchQuery]);
 
     return (
-        <main className="min-h-screen bg-[var(--background)] flex flex-col font-mono text-[13px] leading-relaxed transition-colors duration-200">
+        <main className="min-h-screen overflow-x-hidden w-full bg-[var(--background)] flex flex-col font-mono text-[13px] leading-relaxed transition-colors duration-200">
             <style dangerouslySetInnerHTML={{
                 __html: `
         .cs-pane { animation: fu 0.18s ease; }
@@ -762,16 +762,18 @@ export default function CheatsheetPage() {
             {/* CHEATSHEET VIEW */}
             {view === 'cheatsheet' && (
                 <>
-                    <nav className="sticky top-[108px] md:top-[60px] z-30 bg-[var(--background)] brutal-border border-x-0 border-t-0 px-4 md:px-8 flex overflow-x-auto scrollbar-hide py-1">
-                        {tabs.map(t => (
-                            <button
-                                key={t.id}
-                                onClick={() => setActiveTab(t.id)}
-                                className={`font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase px-4 py-2 cursor-pointer transition-colors whitespace-nowrap brutal-border ${activeTab === t.id ? 'bg-[var(--foreground)] text-[var(--background)]' : 'bg-transparent text-[var(--foreground)] opacity-70 hover:opacity-100 hover:bg-[var(--card-bg)]'} mr-[-4px]`}
-                            >
-                                {t.label}
-                            </button>
-                        ))}
+                    <nav className="sticky top-[108px] md:top-[60px] w-full max-w-[100vw] z-30 bg-[var(--background)] brutal-border border-x-0 border-t-0 flex overflow-x-auto overflow-y-hidden scrollbar-hide py-1 px-2 md:px-6">
+                        <div className="flex w-max px-2 md:px-2">
+                            {tabs.map(t => (
+                                <button
+                                    key={t.id}
+                                    onClick={() => setActiveTab(t.id)}
+                                    className={`font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase px-4 py-2 cursor-pointer transition-colors whitespace-nowrap brutal-border ${activeTab === t.id ? 'bg-[var(--foreground)] text-[var(--background)]' : 'bg-transparent text-[var(--foreground)] opacity-70 hover:opacity-100 hover:bg-[var(--card-bg)]'} mr-[-4px]`}
+                                >
+                                    {t.label}
+                                </button>
+                            ))}
+                        </div>
                     </nav>
 
                     <div className="flex-1 p-4 md:p-8 cs-pane" key={activeTab}>
@@ -849,8 +851,9 @@ export default function CheatsheetPage() {
                         )}
                     </div>
                 </>
-            )}
+            )
+            }
 
-        </main>
+        </main >
     );
 }

@@ -3,7 +3,8 @@ export default function Skills() {
         { label: "LANGUAGES", items: ["JavaScript", "TypeScript", "SQL", "Python"] },
         { label: "FRONTEND", items: ["React.js", "Next.js", "Vue.js", "React Native", "Expo", "Redux", "Pinia", "TailwindCSS"] },
         { label: "BACKEND & DB", items: ["Node.js", "Express.js", "MySQL", "PostgreSQL", "MongoDB", "Redis", "GraphQL", "RESTful APIs"] },
-        { label: "DEVOPS & TOOLS", items: ["Docker", "Kubernetes", "Nginx", "GitHub", "Postman", "Figma", "Linux", "AWS", "Midtrans API"] },
+        { label: "DEVOPS & TOOLS", items: ["Docker", "Kubernetes", "Nginx", "GitHub", "Postman", "Figma", "Linux", "AWS", "GCP", "Alibaba Cloud", "Midtrans API"] },
+        { label: "AI & LLM", items: ["LLM Integration", "Prompt Engineering", "Openclaw"] },
     ];
 
     return (

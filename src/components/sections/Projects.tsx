@@ -56,10 +56,10 @@ export default function Projects() {
         },
         {
             id: "00001100",
-            name: "WATERSHIP WEB",
-            description: "Created responsive web showcase app.",
-            period: "2023",
-            tags: ["REACTJS", "REDUX", "EXPRESS", "TAILWINDCSS"],
+            name: "SELF-HOSTED AI AGENT",
+            description: "Deployed and maintained an autonomous AI agent on VPS, integrated with Telegram and WhatsApp. Configured agent behavior, skills, and messaging workflows for personal automation.",
+            period: "2025",
+            tags: ["LINUX", "ALIBABA CLOUD", "GCP", "OPENCLAW", "TELEGRAM API", "WHATSAPP"],
         },
         {
             id: "00001101",

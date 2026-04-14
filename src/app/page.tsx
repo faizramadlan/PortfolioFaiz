@@ -98,7 +98,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden w-full">
       {/* Top Nav Bar */}
       <nav className="sticky top-0 z-40 bg-[var(--background)] brutal-border border-t-0 border-x-0 p-3 md:p-6 flex justify-between items-center gap-2">
         <div className="font-black text-lg md:text-3xl tracking-tighter uppercase shrink-0">
@@ -171,13 +171,13 @@ export default function Home() {
             <Projects />
           </div>
 
-          {/* Contact — takes left side */}
-          <div id="contact" className="brutal-border p-6 md:p-8 col-span-2 md:col-span-1 lg:col-span-2">
+          {/* Contact */}
+          <div id="contact" className="brutal-border p-6 md:p-8 col-span-2 md:col-span-1 lg:col-span-1">
             <Contact />
           </div>
 
-          {/* Game CTA Card — takes right side on mobile */}
-          <div className="brutal-border p-6 md:p-8 col-span-2 md:col-span-1 flex flex-col items-center justify-center gap-4 md:gap-6 bg-[var(--foreground)] text-[var(--background)]">
+          {/* Game CTA Card */}
+          <div className="brutal-border p-6 md:p-8 col-span-2 md:col-span-1 lg:col-span-1 flex flex-col items-center justify-center gap-4 md:gap-6 bg-[var(--foreground)] text-[var(--background)]">
             <div className="font-press-start text-[8px] md:text-xs tracking-widest opacity-60">EASTER EGG</div>
             <svg width="48" height="36" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-80 md:w-16 md:h-12">
               <rect x="4" y="8" width="56" height="32" rx="0" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="4" />
@@ -205,6 +205,21 @@ export default function Home() {
                 HI-SCORE: {highScore.toString().padStart(6, '0')}
               </div>
             )}
+          </div>
+
+          {/* Tools CTA Card */}
+          <div className="brutal-border p-6 md:p-8 col-span-2 md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center gap-4 md:gap-6 bg-[var(--card-bg)] text-[var(--foreground)] border-t-0 md:border-t-4 lg:border-t-4">
+            <div className="font-press-start text-[8px] md:text-xs tracking-widest opacity-60">PRACTICE</div>
+            <div className="text-4xl md:text-5xl opacity-90 drop-shadow-[4px_4px_0px_var(--foreground)] grayscale">🛠️</div>
+            <div className="font-black text-xl md:text-3xl uppercase tracking-tighter text-center">
+              OR CHECK<br />MY TOOLS<br />INSTEAD
+            </div>
+            <a
+              href="/tools"
+              className="brutal-tag bg-[var(--foreground)] text-[var(--background)] px-4 py-2 md:px-6 md:py-3 hover:opacity-80 transition-opacity cursor-pointer text-[8px] md:text-[10px]"
+            >
+              {'>'} EXPLORE TOOLS
+            </a>
           </div>
 
         </div>
